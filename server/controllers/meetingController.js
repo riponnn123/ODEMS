@@ -1,13 +1,10 @@
 const meetingModel = require("../models/meetingModel");
 const { pool } = require("../config/db");
 exports.createMeeting = async (req, res, next) => {
-  const { Agenda, E_id } = req.body;
+  const { Agenda } = req.body;
   try {
-    await db.query("INSERT INTO Meeting (Agenda, E_id) VALUES (?, ?)", [
-      Agenda,
-      E_id,
-    ]);
-    next();
+    await db.query("INSERT INTO Event (Agenda) VALUES (?)", [Agenda]);
+    res.send("");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

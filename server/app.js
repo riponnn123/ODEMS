@@ -28,7 +28,7 @@ const participantRoutes = require('./routes/participantRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
 const conferenceRoutes = require('./routes/conferenceRoutes');
 const workshopRoutes = require('./routes/workshopRoutes');
-
+const adminRoutes = require("./routes/adminRoutes");
 // Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
@@ -38,7 +38,7 @@ app.use('/api/participants', participantRoutes);
 app.use('/api/meetings', meetingRoutes);
 app.use('/api/conferences', conferenceRoutes);
 app.use('/api/workshops', workshopRoutes);
-
+app.use('/api/admin', adminRoutes);
 // Fallback route for unknown paths
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });

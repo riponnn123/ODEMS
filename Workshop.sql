@@ -3,7 +3,7 @@ CREATE TABLE Workshop (
     E_id INT,
     FOREIGN KEY (E_id) REFERENCES Event(E_id)
 );
-
+select * from Workshop;
 CREATE TABLE Workshop_Topics (
     Topic_id INT PRIMARY KEY AUTO_INCREMENT,
     Workshop_id INT,
@@ -25,5 +25,7 @@ CREATE TABLE Workshop_Sessions (
     FOREIGN KEY (Workshop_id) REFERENCES Workshop(Workshop_id)
 );
 
+select * from workshop;
 drop table Workshop;
+delete from Workshop;
 

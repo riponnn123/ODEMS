@@ -24,3 +24,15 @@ exports.createFaculty = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAllRequests = async (req, res)=>{
+  try{
+    const F_id = "CS101";
+    const response = await pool.query(`SELECT * FROM Event WHERE F_id = ?`, [F_id]);
+    const Data = response[0];
+
+    res.json({message: "fetched succesfully", data: Data})
+  }catch(err){
+    res.status(400).send("ERROR " +err.message )
+  }
+}

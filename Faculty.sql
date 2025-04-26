@@ -5,5 +5,5 @@ CREATE TABLE Faculty (
     F_email VARCHAR(150) UNIQUE NOT NULL,
     F_password VARCHAR(255) NOT NULL
 );
-
+select * from Faculty;
 drop table faculty;
