@@ -1,8 +1,8 @@
-const studentModel = require("../models/studentModel");
 const { validationResult } = require("express-validator");
 const {pool} = require("../config/db")
-
 const bcrypt = require("bcryptjs");
+const {generateToken} = require("../utils/jwt");
+
 exports.getAllStudents = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM Student");
@@ -21,6 +21,27 @@ exports.createStudent = async (req, res) => {
       [S_rollno, S_fname, S_lname, S_email, hashedPassword]
     );
     res.status(201).json({ message: "Student created" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.studentLogin = async (req, res) => {
+  const { S_email, S_password } = req.body;
+  try {
+    const [students] = await pool.query('SELECT * FROM Student WHERE S_email = ?', [S_email]);
+    if (students.length === 0) {
+      return res.status(400).json({ message: 'Student not found' });
+    }
+
+    const validPassword = await bcrypt.compare(S_password, students[0].S_password);
+    if (!validPassword) {
+      return res.status(400).json({ message: 'Invalid password' });
+    }
+
+    const token = generateToken({ id: students[0].S_rollno, role: 'student' });
+    res.cookie('token', token, { httpOnly: true, secure: false });
+    res.json({ message: 'Student login successful' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -12,10 +12,15 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { errorHandler } = require('./middlewares/errorHandler');
 
+const cookieParser = require('cookie-parser');
+
+
+
 // Load environment variables
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 

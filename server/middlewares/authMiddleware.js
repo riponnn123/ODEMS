@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const db = require('../config/db');
 
 exports.verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -25,3 +25,4 @@ exports.authorizeRoles = (...roles) => {
     next();
   };
 };
+
