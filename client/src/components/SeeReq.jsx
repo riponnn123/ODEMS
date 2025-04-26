@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const SeeReq = () => {
   const getAllRequests = async () => {
     const response = await axios.get(
-      "http://localhost:7777/api/faculty/see-all-req"
+      "http://localhost:7777/api/faculties/see-all-req"
     );
     return response;
   };
