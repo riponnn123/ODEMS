@@ -1,30 +1,41 @@
-const workshopModel = require('../models/workshopModel');
+const { pool } = require("../config/db");
 
-exports.createWorkshop = async (req, res) => {
+exports.createWorkshop = async (req, res,next) => {
   const { E_id } = req.body;
   try {
-    await db.query('INSERT INTO Workshop (E_id) VALUES (?)', [E_id]);
-    res.status(201).json({ message: 'Workshop created' });
+    const[result] = 
+    await pool.query('INSERT INTO Workshop (E_id) VALUES (?)', [E_id]);
+    //res.status(201).json({ message: 'Workshop created' });
+    req.body.Workshop_id = result.insertId;
+    next();
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.addTopic = async (req, res) => {
-  const { Workshop_id, Topic } = req.body;
+exports.addTopic = async (req, res, next) => {
+  const { Workshop_id, Topics } = req.body;
   try {
-    await db.query('INSERT INTO Workshop_Topics (Workshop_id, Topic) VALUES (?, ?)', [Workshop_id, Topic]);
-    res.status(201).json({ message: 'Workshop topic added' });
+    Topics.forEach( async(name) => {
+      await pool.query('INSERT INTO Workshop_Topics (Workshop_id, Topic) VALUES (?, ?)',
+         [Workshop_id, name]);
+    //res.status(201).json({ message: 'Workshop topic added' });
+    next();
+    }); 
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 exports.addTrainer = async (req, res) => {
-  const { Workshop_id, Trainer_Name } = req.body;
+  const { Workshop_id, Trainers } = req.body;
   try {
-    await db.query('INSERT INTO Workshop_Trainers (Workshop_id, Trainer_Name) VALUES (?, ?)', [Workshop_id, Trainer_Name]);
-    res.status(201).json({ message: 'Trainer added' });
+    Trainers.forEach(async(names)=>{
+      await pool.query('INSERT INTO Workshop_Trainers (Workshop_id, Trainer_Name) VALUES (?, ?)',
+         [Workshop_id, names]);
+    })
+    
+    res.status(201).json({ message: 'Workshop Created' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -33,7 +44,7 @@ exports.addTrainer = async (req, res) => {
 exports.addSession = async (req, res) => {
   const { Workshop_id, Session_Title } = req.body;
   try {
-    await db.query('INSERT INTO Workshop_Sessions (Workshop_id, Session_Title) VALUES (?, ?)', [Workshop_id, Session_Title]);
+    await pool.query('INSERT INTO Workshop_Sessions (Workshop_id, Session_Title) VALUES (?, ?)', [Workshop_id, Session_Title]);
     res.status(201).json({ message: 'Session added' });
   } catch (err) {
     res.status(500).json({ error: err.message });

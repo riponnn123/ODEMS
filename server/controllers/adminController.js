@@ -37,7 +37,7 @@ exports.approveRequest = async (req, res) => {
     }else if (E_type == "Conferences"){
 
     }
-    res.send('HELL')
+    res.send("Approved");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
