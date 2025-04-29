@@ -1,45 +1,91 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-export const SeeReq = () => {
-  const getAllRequests = async () => {
-    const response = await axios.get(
-      "http://localhost:7777/api/faculties/see-all-req"
-    );
-    return response;
-  };
-  const [allreq, setallreq] = useState([]);
+import React, { useState, useEffect } from 'react';
+import '../styles/main.css';
+
+const SeeReq = () => {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const get = async () => {
-      const response = await getAllRequests();
-      setallreq(response.data.data);
+    // Simulate fetching requests
+    const fetchRequests = async () => {
+      try {
+        // Replace with actual API call
+        const mockRequests = [
+          {
+            id: 1,
+            title: 'Document Request 1',
+            status: 'Pending',
+            date: '2024-04-28',
+            requester: 'John Doe'
+          },
+          {
+            id: 2,
+            title: 'Document Request 2',
+            status: 'Approved',
+            date: '2024-04-27',
+            requester: 'Jane Smith'
+          }
+        ];
+        setRequests(mockRequests);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+        setLoading(false);
+      }
     };
-    get();
+
+    fetchRequests();
   }, []);
+
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'orange';
+      case 'approved':
+        return 'green';
+      case 'rejected':
+        return 'red';
+      default:
+        return 'gray';
+    }
+  };
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
   return (
-    <div className="request-container">
-      <div className="request-header">
-        <span className="request-item">Title</span>
-        <span className="request-item">Type</span>
-        <span className="request-item">Date</span>
-        <span className="request-item">Time</span>
-        <span className="request-item">Venue ID</span>
-        <span className="request-item">Organizers</span>
-      </div>
-      {allreq.map((req, index) => (
-        <div key={index} className="request-row">
-          <span className="request-item">{req.E_title}</span>
-          <span className="request-item">{req.E_type}</span>
-          <span className="request-item">{req.Date}</span>
-          <span className="request-item">{req.Time}</span>
-          <span className="request-item">{req.Venue_id}</span>
-          <span className="request-item">{req.Organizer}</span>
-          {req.confirmationStatus ? (
-            <div className="status">APPROVED</div>
-          ) : (
-            <div className="status">PENDING</div>
-          )}
+    <div className="requests">
+      <h2 className="mb-2">Document Requests</h2>
+      <div className="card">
+        <div className="flex justify-between mb-2">
+          <h3>Recent Requests</h3>
+          <button className="btn btn-primary">New Request</button>
         </div>
-      ))}
+        <div className="requests-list">
+          {requests.map(request => (
+            <div key={request.id} className="card mb-1">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h4>{request.title}</h4>
+                  <p className="text-muted">Requested by: {request.requester}</p>
+                  <p className="text-muted">Date: {request.date}</p>
+                </div>
+                <span 
+                  style={{ 
+                    color: getStatusColor(request.status),
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {request.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
+
+export default SeeReq;
