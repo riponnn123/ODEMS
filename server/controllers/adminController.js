@@ -52,3 +52,28 @@ exports.rejectRequest = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAdminInfo = async (req, res) => {
+  try {
+    const adminId = req.user.id; // Get admin ID from the authenticated user
+    const [rows] = await pool.query(
+      "SELECT A_id, A_name, A_email FROM Admin WHERE A_id = ?",
+      [adminId]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    const adminInfo = {
+      A_id: rows[0].A_id,
+      A_name: rows[0].A_name,
+      A_email: rows[0].A_email,
+      //A_role: rows[0].A_role
+    };
+
+    res.json(adminInfo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

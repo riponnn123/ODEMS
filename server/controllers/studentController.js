@@ -46,3 +46,28 @@ exports.studentLogin = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getStudentInfo = async (req, res) => {
+  try {
+    const studentId = req.user.id; // Get student ID from the authenticated user
+    const [rows] = await pool.query(
+      "SELECT S_rollno, S_fname, S_lname, S_email FROM Student WHERE S_rollno = ?",
+      [studentId]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    const studentInfo = {
+      S_id: rows[0].S_rollno,
+      S_name: `${rows[0].S_fname} ${rows[0].S_lname}`,
+      S_email: rows[0].S_email,
+     // S_department: rows[0].S_department
+    };
+
+    res.json(studentInfo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

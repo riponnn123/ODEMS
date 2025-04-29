@@ -30,9 +30,9 @@ exports.getAllEvents = async (req, res) => {
       if(E_type == "Workshop"){
         await pool.query(`INSERT INTO Workshop VALUES`)
       }else if(E_type == "Meeting"){
-
+        await pool.query(`INSERT INTO Meeting VALUES`)
       }else if(E_type == "Conferences"){
-
+        await pool.query(`INSERT INTO Conference VALUES`)
       }
       res.status(201).json({ message: 'Event created' });
     } catch (err) {

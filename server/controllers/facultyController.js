@@ -1,5 +1,4 @@
 const { pool } = require("../config/db");
-const facultyModel = require("../models/facultyModel");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/jwt");
 
@@ -29,19 +28,30 @@ exports.createFaculty = async (req, res) => {
 exports.facultyLogin = async (req, res) => {
   const { F_email, F_password } = req.body;
   try {
-    const [faculties] = await pool.query('SELECT * FROM Faculty WHERE F_email = ?', [F_email]);
+    const [faculties] = await pool.query(
+      "SELECT * FROM Faculty WHERE F_email = ?",
+      [F_email]
+    );
     if (faculties.length === 0) {
-      return res.status(400).json({ message: 'Faculty not found' });
+      return res.status(400).json({ message: "Faculty not found" });
     }
 
-    const validPassword = await bcrypt.compare(F_password, faculties[0].F_password);
+    const validPassword = await bcrypt.compare(
+      F_password,
+      faculties[0].F_password
+    );
     if (!validPassword) {
-      return res.status(400).json({ message: 'Invalid password' });
+      return res.status(400).json({ message: "Invalid password" });
     }
 
-    const token = generateToken({ id: faculties[0].F_id, role: 'faculty' });
-    res.cookie('token', token, { httpOnly: true, secure: false });
-    res.json({ message: 'Faculty login successful' });
+    const token = generateToken({ id: faculties[0].F_id, role: "faculty" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
+    console.log(token);
+    res.json({ message: "Faculty login successful" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -58,5 +68,36 @@ exports.getAllRequests = async (req, res) => {
     res.json({ message: "fetched succesfully", data: Data });
   } catch (err) {
     res.status(400).send("ERROR " + err.message);
+  }
+};
+
+exports.getFacultyInfo = async (req, res) => {
+  try {
+    const temp = req.user; // Get faculty ID from the authenticated user
+    const {F_id} = temp;
+    console.log("gamari gos bhal pau");
+    const [rows] = await pool.query(
+      "SELECT F_id, F_fname, F_lname, F_email FROM Faculty WHERE F_id = ?",
+      [F_id]
+    );
+    console.log("gamari gos bhal pau");
+    console.log(rows);
+    if (rows.length === 0) {
+      // return res.status(404).json({ error: "Faculty not found" });
+      res.send("Faculty not found");
+    }
+    console.log("gamari gos bhal pau");
+
+    const facultyInfo = {
+      F_id: rows[0].F_id,
+      F_name: `${rows[0].F_fname} ${rows[0].F_lname}`,
+      F_email: rows[0].F_email,
+      //IF_department: rows[0].F_department
+    };
+
+    //  res.json({facultyInfo});
+    res.send(facultyInfo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
