@@ -15,13 +15,23 @@ const StudentDashboard = () => {
   const fetchStudentInfo = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found. Please log in again.');
+      }
+
       const response = await axios.get(API_ENDPOINTS.STUDENT.GET_INFO, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setStudentInfo(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError('Failed to fetch student information');
+
+      if (response.status === 200) {
+        setStudentInfo(response.data);
+        setError('');
+      } else {
+        throw new Error('Failed to fetch student information.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'An error occurred.');
+    } finally {
       setLoading(false);
     }
   };
@@ -34,8 +44,8 @@ const StudentDashboard = () => {
     <div className="dashboard">
       <h2>Student Dashboard</h2>
       {error && <div className="error-message">{error}</div>}
-      
-      {studentInfo && (
+
+      {studentInfo ? (
         <div className="student-info">
           <h3>Your Information</h3>
           <div className="info-grid">
@@ -48,11 +58,10 @@ const StudentDashboard = () => {
             <div className="info-item">
               <strong>Email:</strong> {studentInfo.S_email}
             </div>
-            <div className="info-item">
-              <strong>Department:</strong> {studentInfo.S_department}
-            </div>
           </div>
         </div>
+      ) : (
+        <div className="error-message">No student information available.</div>
       )}
 
       <div className="dashboard-section">
@@ -68,4 +77,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard; 
+export default StudentDashboard;

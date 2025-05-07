@@ -1,0 +1,64 @@
+.faculty-dashboard {
+  font-family: sans-serif;
+  padding: 20px;
+}
+.main-grid {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+}
+.left-column,
+.right-column {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+}
+.bottom-grid {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+}
+.create-box,
+.upcoming-events-box {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+table th {
+  background: #f0f0f0;
+}
+.create-event-form input,
+.create-event-form select,
+.create-event-form button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.event-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+button {
+  background-color: #0052cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #003d99;
+}
