@@ -1,12 +1,3 @@
-// const express = require('express');
-// const {connectDB}=require ('./db');
-// const app = express();
-
-// express.json()
-// connectDB();
-
-// index.js (acts like app.js)
-// index.js (acts like app.js)
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -19,8 +10,13 @@ dotenv.config();
 
 const app = express();
 app.use(cookieParser());
-app.use(cors());
 app.use(express.json());
+
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend port
+  credentials: true
+}));
+
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');

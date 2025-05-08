@@ -71,32 +71,55 @@ exports.getAllRequests = async (req, res) => {
   }
 };
 
-exports.getFacultyInfo = async (req, res) => {
+// exports.getFacultyInfo = async (req, res) => {
+//   try {
+//     const temp = req.user; // Get faculty ID from the authenticated user
+//     const {F_id} = temp;
+//     const [rows] = await pool.query(
+//       "SELECT F_id, F_fname, F_lname, F_email FROM Faculty WHERE F_id = ?",
+//       [F_id]
+//     );
+//     console.log(rows);
+//     if (rows.length === 0) {
+//       // return res.status(404).json({ error: "Faculty not found" });
+//       res.send("Faculty not found");
+//     }
+//     const facultyInfo = {
+//       F_id: rows[0].F_id,
+//       F_name: `${rows[0].F_fname} ${rows[0].F_lname}`,
+//       F_email: rows[0].F_email,
+//       //IF_department: rows[0].F_department
+//     };
+
+//     //  res.json({facultyInfo});
+//     res.send(facultyInfo);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+exports.getFacultyInfo = async (req, res) => { 
   try {
-    const temp = req.user; // Get faculty ID from the authenticated user
-    const {F_id} = temp;
-    console.log("gamari gos bhal pau");
+    const { F_id } = req.user; // Auth middleware should populate req.user
+
     const [rows] = await pool.query(
       "SELECT F_id, F_fname, F_lname, F_email FROM Faculty WHERE F_id = ?",
       [F_id]
     );
-    console.log("gamari gos bhal pau");
-    console.log(rows);
+
     if (rows.length === 0) {
-      // return res.status(404).json({ error: "Faculty not found" });
-      res.send("Faculty not found");
+      return res.status(404).json({ error: "Faculty not found" });
     }
-    console.log("gamari gos bhal pau");
 
     const facultyInfo = {
       F_id: rows[0].F_id,
-      F_name: `${rows[0].F_fname} ${rows[0].F_lname}`,
+      F_fname: rows[0].F_fname,
+      F_lname: rows[0].F_lname,
       F_email: rows[0].F_email,
-      //IF_department: rows[0].F_department
+      F_name: `${rows[0].F_fname} ${rows[0].F_lname}`
     };
 
-    //  res.json({facultyInfo});
-    res.send(facultyInfo);
+    res.json(facultyInfo);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
