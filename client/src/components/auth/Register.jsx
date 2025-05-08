@@ -11,7 +11,6 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     role: 'student',
-    department: '',
     studentId: '',
     facultyId: ''
   });
@@ -108,7 +107,7 @@ const Register = () => {
             <option value="faculty">Faculty</option>
           </select>
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label className="form-label" htmlFor="department">Department</label>
           <input
             type="text"
@@ -119,7 +118,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-        </div>
+        </div> */}
         {formData.role === 'student' && (
           <div className="form-group">
             <label className="form-label" htmlFor="studentId">Student ID</label>

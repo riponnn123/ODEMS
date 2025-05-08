@@ -23,7 +23,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(formData);
       const response = await axios.post(API_ENDPOINTS.AUTH.LOGIN, formData);
+      console.log(response);
       
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);

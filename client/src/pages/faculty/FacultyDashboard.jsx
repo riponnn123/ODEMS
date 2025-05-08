@@ -14,10 +14,16 @@ const FacultyDashboard = () => {
 
   const fetchData = async () => {
     try {
+      console.log("token in localStorage:", localStorage.getItem("token"));
       const info = await axios.get(`${BASE_URL}/faculties/info`, {
-        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
       });
+      console.log("Faculty info:", info.data);
       setFacultyInfo(info.data);
+      
 
       const eventRes = await axios.get(`${BASE_URL}/faculties/requests`, {
         withCredentials: true,

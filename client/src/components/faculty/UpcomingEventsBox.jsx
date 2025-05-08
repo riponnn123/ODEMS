@@ -5,17 +5,17 @@ const BASE_URL = "http://localhost:7777/api"; // 🛠 replace with your actual b
 const UpcomingEventsBox = () => {
   const [upcoming, setUpcoming] = useState([]);
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}/event/upcoming`, { withCredentials: true })
-      .then(res => setUpcoming(res.data))
-      .catch(err => console.error("Upcoming fetch error", err));
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${BASE_URL}/event/upcoming`, { headers: { withCredentials: true } })
+  //     .then(res => setUpcoming(res.data))
+  //     .catch(err => console.error("Upcoming fetch error", err));
+  // }, []);
 
   const handleJoin = async (eventId) => {
     await axios.post(`${BASE_URL}/participant/join`, {
       eventId,
       facultyId: "F123" // 🛠 replace with dynamic ID via context or JWT
-    }, { withCredentials: true });
+    }, { headers: { withCredentials: true } });
     alert("You joined the event!");
   };
 

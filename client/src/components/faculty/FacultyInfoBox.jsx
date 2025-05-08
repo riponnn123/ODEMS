@@ -6,7 +6,7 @@ const FacultyInfoBox = ({ faculty }) => {
   return (
     <div className="faculty-info-box">
       <h3>Faculty Dashboard</h3>
-      <p><strong>Name:</strong> {faculty.F_fname} {faculty.F_lname}</p>
+      <p><strong>Name:</strong> {faculty.F_name}</p>
       <p><strong>Email:</strong> {faculty.F_email}</p>
       <p><strong>ID:</strong> {faculty.F_id}</p>
     </div>
@@ -14,3 +14,4 @@ const FacultyInfoBox = ({ faculty }) => {
 };
 
 export default FacultyInfoBox;
+
