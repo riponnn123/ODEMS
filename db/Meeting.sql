@@ -25,5 +25,9 @@ CREATE TABLE Meeting_Minutes (
     Minute TEXT,
     FOREIGN KEY (Meeting_id) REFERENCES Meeting(Meeting_id)
 );
+USE odems;
+SELECT * FROM Meeting;
+SELECT * FROM Meeting_Members;
+SELECT * FROM Meeting_Points;
 
 

@@ -15,7 +15,7 @@ CREATE TABLE Event (
     FOREIGN KEY (A_id) REFERENCES Admin(A_id)
 );
 alter table Event drop column A_id;
-select * from event;	 
+select * from event;
 drop table event;
 
 update event set ConfirmationStatus= false where E_id = 1;

@@ -20,5 +20,9 @@ CREATE TABLE Conference_Papers (
 );
 
 drop table conference;
+select * from conference;
+select * from conference_speakers;
+select * from conference;
+
 
 

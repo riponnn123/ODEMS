@@ -27,6 +27,7 @@ exports.createFaculty = async (req, res) => {
 
 exports.facultyLogin = async (req, res) => {
   const { F_email, F_password } = req.body;
+  console.log("Faculty login request:", req.body);
   try {
     const [faculties] = await pool.query(
       "SELECT * FROM Faculty WHERE F_email = ?",
@@ -47,8 +48,8 @@ exports.facultyLogin = async (req, res) => {
     const token = generateToken({ id: faculties[0].F_id, role: "faculty" });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
+      secure: false,
+      sameSite: "Lax",
     });
     console.log(token);
     res.json({ message: "Faculty login successful" });
@@ -100,8 +101,10 @@ exports.getAllRequests = async (req, res) => {
 
 exports.getFacultyInfo = async (req, res) => { 
   try {
+    console.log("REQ.USER from token middleware:", req.user);
     const { F_id } = req.user; // Auth middleware should populate req.user
 
+    
     const [rows] = await pool.query(
       "SELECT F_id, F_fname, F_lname, F_email FROM Faculty WHERE F_id = ?",
       [F_id]
@@ -113,8 +116,6 @@ exports.getFacultyInfo = async (req, res) => {
 
     const facultyInfo = {
       F_id: rows[0].F_id,
-      F_fname: rows[0].F_fname,
-      F_lname: rows[0].F_lname,
       F_email: rows[0].F_email,
       F_name: `${rows[0].F_fname} ${rows[0].F_lname}`
     };

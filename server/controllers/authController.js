@@ -44,26 +44,28 @@ exports.login = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { name, email, password, role, department, studentId, facultyId } = req.body;
+  const { name, email, password, role, studentId, facultyId } = req.body;
+  const fname= name.split(" ")[0];
+  const lname = name.split(" ")[1];//spliting the name
   try {
     let table, fields, values;
     
     switch(role) {
       case 'student':
         table = 'Student';
-        fields = ['S_name', 'S_email', 'S_password', 'S_department', 'S_id'];
-        values = [name, email, await bcrypt.hash(password, 10), department, studentId];
+        fields = ['S_fname','S_lname', 'S_email', 'S_password', 'S_rollno'];
+        values = [fname,lname, email, await bcrypt.hash(password, 10), studentId];
         break;
       case 'faculty':
         table = 'Faculty';
-        fields = ['F_name', 'F_email', 'F_password', 'F_department', 'F_id'];
-        values = [name, email, await bcrypt.hash(password, 10), department, facultyId];
+        fields = ['F_fname','F_lname', 'F_email', 'F_password',  'F_id'];
+        values = [fname,lname, email, await bcrypt.hash(password, 10),  facultyId];
         break;
       default:
         return res.status(400).json({ error: 'Invalid role' });
     }
 
-    const [result] = await db.query(
+    const [result] = await pool.query(
       `INSERT INTO ${table} (${fields.join(', ')}) VALUES (${fields.map(() => '?').join(', ')})`,
       values
     );

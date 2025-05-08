@@ -29,6 +29,8 @@ const conferenceRoutes = require('./routes/conferenceRoutes');
 const workshopRoutes = require('./routes/workshopRoutes');
 const adminRoutes = require("./routes/adminRoutes");
 
+console.log("Routes imported");
+
 // Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);

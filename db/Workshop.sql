@@ -25,7 +25,8 @@ CREATE TABLE Workshop_Sessions (
     FOREIGN KEY (Workshop_id) REFERENCES Workshop(Workshop_id)
 );
 
-select * from workshop;
+select * from workshop_topics;
+select * from workshop_trainers;
 drop table Workshop;
 delete from Workshop;
 
