@@ -7,8 +7,10 @@ CREATE TABLE Admin (
     F_id VARCHAR(30),
     FOREIGN KEY (F_id) REFERENCES Faculty(F_id)
 );
-INSERT INTO Admin VALUES 
-	("adm101", "Sarat", "Saharia", "ss@tezu.ernet.in", "SS@123", "cs102");
 select * from Admin;
+UPDATE Event SET A_id = NULL WHERE A_id = 'adm101';
+DELETE FROM Admin WHERE A_id = 'adm101';
+
+
 
 

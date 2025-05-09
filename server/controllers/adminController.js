@@ -1,27 +1,6 @@
 const { pool } = require("../config/db");
-const { generateToken } = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
-
-exports.adminLogin = async (req, res) => {
-  const { A_email, A_password } = req.body;
-  try {
-    const [admins] = await pool.query('SELECT * FROM Admin WHERE A_email = ?', [A_email]);
-    if (admins.length === 0) {
-      return res.status(400).json({ message: 'Admin not found' });
-    }
-
-    // const validPassword = await bcrypt.compare(A_password, admins[0].A_password);
-    // if (!validPassword) {
-    //   return res.status(400).json({ message: 'Invalid password' });
-    // }
-
-    const token = generateToken({ id: admins[0].A_id, role: 'admin' });
-    res.cookie('token', token, { httpOnly: true, secure: false });
-    res.json({ message: 'Admin login successful' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+const { generateToken } = require("../utils/jwt");
 
 exports.approveRequest = async (req, res) => {
   try {
@@ -52,6 +31,60 @@ exports.rejectRequest = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getPendingEvents = async (req, res) => {
+  try {
+    const [events] = await pool.query(`
+      SELECT 
+        Event.E_id, E_title, E_type, Organizer, Date, Time, Duration, ConfirmationStatus, Venue.V_name 
+      FROM Event 
+      JOIN Venue ON Event.V_id = Venue.V_id
+      WHERE ConfirmationStatus = false
+    `);
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.adminLogin = async (req, res) => {
+  const { A_email, A_password } = req.body;
+  console.log("Admin login attempt:", A_email);
+
+  try {
+    const [admins] = await pool.query(
+      "SELECT * FROM Admin WHERE A_email = ?",
+      [A_email]
+    );
+
+    if (admins.length === 0) {
+      return res.status(400).json({ message: "Admin not found" });
+    }
+
+    const validPassword = await bcrypt.compare(
+      A_password,
+      admins[0].A_password
+    );
+
+    if (!validPassword) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    // ✅ Token includes admin ID and role
+    const token = generateToken({ A_id: admins[0].A_id, role: "admin" });
+
+    res.status(200).json({
+      message: "Admin login successful",
+      token,
+      role: "admin"
+    });
+
+  } catch (err) {
+    console.error("Login error:", err.message);
+    res.status(500).json({ error: "Server error during login" });
+  }
+};
+
 
 exports.getAdminInfo = async (req, res) => {
   try {

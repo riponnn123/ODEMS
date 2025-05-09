@@ -1,0 +1,85 @@
+/* Container */
+.admin-dashboard {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.admin-dashboard h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Event list */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Event card */
+.event-card {
+  background-color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  border-left: 5px solid #3b82f6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.event-card:hover {
+  transform: scale(1.01);
+}
+
+.event-card h4 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.event-card p {
+  margin: 4px 0;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* Action buttons */
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.actions button:first-child {
+  background-color: #22c55e; /* Green */
+  color: #fff;
+}
+
+.actions button:first-child:hover {
+  background-color: #16a34a;
+}
+
+.actions button:last-child {
+  background-color: #ef4444; /* Red */
+  color: #fff;
+}
+
+.actions button:last-child:hover {
+  background-color: #dc2626;
+}
