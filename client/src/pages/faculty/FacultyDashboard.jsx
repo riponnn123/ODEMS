@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FacultyInfoBox from "../../components/faculty/FacultyInfoBox"
 import EventListBox from "../../components/faculty/EventListBox";
 import CreateEvent from "../../components/faculty/CreateEvent";
@@ -53,7 +53,7 @@ const FacultyDashboard = () => {
       <div className="bottom-grid">
         <div className="create-box">
           <button onClick={() => setShowCreateEvent(!showCreateEvent)}>
-            {showCreateEvent ? "Close Event Form" : "Create New Event"}
+            {showCreateEvent ? "Create New Event" : "Close Event Form" }
           </button>
           {showCreateEvent && <CreateEvent />}
         </div>

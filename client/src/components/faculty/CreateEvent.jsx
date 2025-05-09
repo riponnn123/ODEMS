@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:7777/api";
@@ -33,9 +33,11 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${BASE_URL}/event/create`, formData, {
-        withCredentials: true,
-      });
+      await axios.post(`${BASE_URL}/events/create`, formData, {
+        headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+    });
       setMessage("Event created and sent for approval.");
       setFormData({
         E_title: "",

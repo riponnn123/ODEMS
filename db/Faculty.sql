@@ -7,3 +7,4 @@ CREATE TABLE Faculty (
 );
 select * from Faculty;
 drop table faculty;
+use ODEMS;

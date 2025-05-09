@@ -1,5 +1,3 @@
-import React from "react";
-
 const FacultyInfoBox = ({ faculty }) => {
   if (!faculty) return <p>Loading faculty info...</p>;
 
