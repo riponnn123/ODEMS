@@ -9,34 +9,6 @@ exports.getAllEvents = async (req, res) => {
     }
   };
   
-  // exports.createEvent = async (req, res) => {
-  //   const { E_title, E_type, V_name, Date, Time, Duration, Organizer} = req.body;
-  //   console.log(req.body);
-  //   console.log(V_name);
-  
-  //   try {
-  //     const { F_id } = req.user;
-  //     const response = await pool.query(`SELECT V_id FROM Venue 
-  //       WHERE V_name = ?`, [V_name]);;
-  //       // console.log(response);
-  //       const vid = response[0][0].V_id
-  //       console.log(vid);
-  //       await pool.query(
-  //       'INSERT INTO Event (E_title, E_type, V_id, Date, Time, Duration, Organizer, ConfirmationStatus, F_id, A_id) VALUES (?, ?, ?, ?, ?, ?, ?, false, ?, ?)',
-  //       [E_title, E_type, vid, Date, Time, Duration, Organizer, FID, AID]
-  //     );
-  //     if(E_type == "Workshop"){
-  //       await pool.query(`INSERT INTO Workshop VALUES`)
-  //     }else if(E_type == "Meeting"){
-  //       await pool.query(`INSERT INTO Meeting VALUES`)
-  //     }else if(E_type == "Conferences"){
-  //       await pool.query(`INSERT INTO Conference VALUES`)
-  //     }
-  //     res.status(201).json({ message: 'Event created' });
-  //   } catch (err) {
-  //     res.status(500).json({ error: err.message });
-  //   }
-  // };
 
   exports.createEvent = async (req, res) => {
   const { E_title, E_type, V_name, Date, Time, Duration, Organizer } = req.body;
@@ -68,3 +40,150 @@ exports.getAllEvents = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getEventById = async (req, res) => {
+  const { E_id } = req.params;
+
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM Event WHERE E_id = ?",
+      [E_id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.preEventDetails = async (req, res) => {
+  const { E_id } = req.params;
+  const {
+    Agenda, Members, Points,
+    Topics, Trainers,
+    Theme, Speakers, 
+  } = req.body;
+
+  try {
+    const [[eventRow]] = await pool.query(
+      "SELECT * FROM Event WHERE E_id = ? AND ConfirmationStatus = 1",
+      [E_id]
+    );
+
+    if (!eventRow) {
+      return res.status(404).json({ message: "Approved event not found" });
+    }
+
+    const type = eventRow.E_type;
+
+    if (type === "Meeting") {
+      const [meetingResult] = await pool.query(
+        "INSERT INTO Meeting (Agenda, E_id) VALUES (?, ?)",
+        [Agenda, E_id]
+      );
+      const Meeting_id = meetingResult.insertId;
+
+      const memberArr = Members?.split(",").map(m => m.trim()) || [];
+      const pointArr = Points?.split(",").map(p => p.trim()) || [];
+
+      for (const m of memberArr) {
+        await pool.query("INSERT INTO Meeting_Members (Meeting_id, Member_Name) VALUES (?, ?)", [Meeting_id, m]);
+      }
+
+      for (const p of pointArr) {
+        await pool.query("INSERT INTO Meeting_Points (Meeting_id, Point) VALUES (?, ?)", [Meeting_id, p]);
+      }
+
+    } else if (type === "Workshop") {
+      const [workshopResult] = await pool.query(
+        "INSERT INTO Workshop (E_id) VALUES (?)", [E_id]
+      );
+      const Workshop_id = workshopResult.insertId;
+
+      const topicArr = Topics?.split(",").map(t => t.trim()) || [];
+      const trainerArr = Trainers?.split(",").map(t => t.trim()) || [];
+
+      for (const t of topicArr) {
+        await pool.query("INSERT INTO Workshop_Topics (Workshop_id, Topic) VALUES (?, ?)", [Workshop_id, t]);
+      }
+
+      for (const t of trainerArr) {
+        await pool.query("INSERT INTO Workshop_Trainers (Workshop_id, Trainer_Name) VALUES (?, ?)", [Workshop_id, t]);
+      }
+
+    } else if (type === "Conferences") {
+      const [confResult] = await pool.query(
+        "INSERT INTO Conference (Theme, E_id) VALUES (?, ?)",
+        [Theme, E_id]
+      );
+      const Conference_id = confResult.insertId;
+
+      const speakerArr = Speakers?.split(",").map(s => s.trim()) || [];
+
+      for (const s of speakerArr) {
+        await pool.query("INSERT INTO Conference_Speakers (Conference_id, Speaker_Name) VALUES (?, ?)", [Conference_id, s]);
+      }
+    }
+
+    res.status(200).json({ message: `${type} details saved successfully.` });
+  } catch (err) {
+    console.error("Finalize error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.postEventDetails = async (req, res) => {
+  const { E_id } = req.params;
+  const { Minutes, Sessions, Papers } = req.body;
+
+  try {
+    const [[event]] = await pool.query("SELECT * FROM Event WHERE E_id = ?", [E_id]);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const type = event.E_type;
+
+    if (type === "Meeting" && Minutes) {
+      const [[meeting]] = await pool.query("SELECT Meeting_id FROM Meeting WHERE E_id = ?", [E_id]);
+      const Meeting_id = meeting?.Meeting_id;
+
+      const minuteArr = Minutes.split(",").map(m => m.trim());
+      for (const m of minuteArr) {
+        await pool.query("INSERT INTO Meeting_Minutes (Meeting_id, Minute) VALUES (?, ?)", [Meeting_id, m]);
+      }
+
+    } else if (type === "Workshop" && Sessions) {
+      const [[workshop]] = await pool.query("SELECT Workshop_id FROM Workshop WHERE E_id = ?", [E_id]);
+      const Workshop_id = workshop?.Workshop_id;
+
+      const sessionArr = Sessions.split(",").map(s => s.trim());
+      for (const s of sessionArr) {
+        await pool.query("INSERT INTO Workshop_Sessions (Workshop_id, Session_Title) VALUES (?, ?)", [Workshop_id, s]);
+      }
+
+    } else if (type === "Conferences" && Papers) {
+      const [[conference]] = await pool.query("SELECT Conference_id FROM Conference WHERE E_id = ?", [E_id]);
+      const Conference_id = conference?.Conference_id;
+
+      const paperArr = Papers.split(",").map(p => p.trim());
+      for (const p of paperArr) {
+        await pool.query("INSERT INTO Conference_Papers (Conference_id, Paper_Title) VALUES (?, ?)", [Conference_id, p]);
+      }
+    }
+
+    res.status(200).json({ message: `${type} post-event data saved.` });
+
+  } catch (err) {
+    console.error("Post-finalization error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+

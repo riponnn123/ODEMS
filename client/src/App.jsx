@@ -8,6 +8,9 @@ import Register from './components/auth/Register'
 import StudentDashboard from './pages/student/StudentDashboard'
 import FacultyDashboard from './pages/faculty/FacultyDashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import PreEventDetails from "./pages/faculty/PreEventDetails";
+import PostFinalizeEvent from "./pages/faculty/postEventdetails";
+
 import './styles/main.css'
 
 // Protected Route component
@@ -34,6 +37,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route path="/events/prefinalize/:E_id" element={<PreEventDetails />} />
+          <Route path="/events/postfinalize/:E_id" element={<PostFinalizeEvent />} />
           
           {/* Student Routes */}
           <Route

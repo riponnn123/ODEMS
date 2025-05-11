@@ -1,7 +1,6 @@
 .faculty-dashboard {
   font-family: sans-serif;
   padding: 20px;
-  background-color:aqua ;
 }
 .main-grid {
   display: flex;
@@ -36,7 +35,7 @@
   padding: 20px;
   border-radius: 8px;
   margin-top: 0%;
-  background-color: #003d99;
+  background-color: #8b58e3;
 }
 table {
   width: 100%;

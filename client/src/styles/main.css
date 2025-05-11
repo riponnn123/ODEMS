@@ -1,6 +1,7 @@
 @import './dashboard.css';
 @import './facultyDashboard.css';
 @import './adminDashboard.css';
+@import './eventFinalize.css';
 
 /* Reset and base styles */
 * {

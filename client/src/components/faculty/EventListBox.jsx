@@ -1,4 +1,3 @@
-import React from "react";
 const EventListBox = ({ events }) => {
   
   //console.log(events)
@@ -20,7 +19,7 @@ const EventListBox = ({ events }) => {
               <td>{event.ConfirmationStatus === 1 ? "Approved" :event.ConfirmationStatus===0? "Pending":"Rejected"}</td>
               <td>
                 {event.ConfirmationStatus === 1 ? (
-                  <a href={`/event/finalize/${event.E_id}`}>Add Details</a>
+                  <a href={`/events/prefinalize/${event.E_id}`}>Add Details</a>
                 ) : (
                   <span>Waiting</span>
                 )}
