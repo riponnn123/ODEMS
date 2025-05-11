@@ -8,6 +8,7 @@ router.get('/faculty-info', facultyController.getAllFaculty);
 router.get('/see-all-req', facultyController.getAllRequests);
 router.post('/faculty-login',facultyController.facultyLogin);
 router.get('/info', verifyToken, facultyController.getFacultyInfo);
+router.get('/events/with/status',verifyToken,facultyController.getEventsWithStatus);
 
 
 module.exports = router;

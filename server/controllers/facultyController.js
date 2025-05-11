@@ -115,3 +115,18 @@ exports.getFacultyInfo = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+exports.getEventsWithStatus=async(req,res)=>{
+  try {
+    const facultyId = req.user.F_id;
+    const [events] = await pool.query(
+      "SELECT * FROM Event WHERE F_id = ? ",
+      [facultyId]
+    );
+    res.json(events);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch confirmed events" });
+  }
+};

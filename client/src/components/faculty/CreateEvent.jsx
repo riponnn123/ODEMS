@@ -11,7 +11,8 @@ const CreateEvent = () => {
     Time: "",
     Duration: "",
     Organizer: "",
-    V_name: "", // send venue name only
+    V_name: "", 
+    
   });
 
   const [message, setMessage] = useState("");
@@ -48,6 +49,7 @@ const CreateEvent = () => {
         Organizer: "",
         V_name: "",
       });
+      alert("Event created and sent for approval.");
     } catch (err) {
       setMessage("Error: " + err.message);
     }

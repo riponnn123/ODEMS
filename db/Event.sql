@@ -19,3 +19,5 @@ select * from event;
 drop table event;
 use odems;
 update event set ConfirmationStatus= false where E_id = 1;
+SHOW COLUMNS FROM Event LIKE 'ConfirmationStatus';
+

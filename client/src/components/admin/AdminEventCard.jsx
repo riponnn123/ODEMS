@@ -7,12 +7,12 @@ const AdminEventCard = ({ event, onDecision }) => {
       <p><strong>Venue:</strong> {event.V_name}</p>
       <p><strong>Date:</strong> {new Date(event.Date).toLocaleDateString()}</p>
       <p><strong>Time:</strong> {event.Time}</p>
-      <p><strong>Status:</strong> {event.ConfirmationStatus ? "Approved" : "Pending"}</p>
+      {/* <p><strong>Status:</strong> {event.ConfirmationStatus ? "Approved" : "Pending"}</p> */}
 
       {!event.ConfirmationStatus && (
         <div className="actions">
-          <button onClick={() => onDecision(event.E_id, "approve")}>Approve</button>
-          <button onClick={() => onDecision(event.E_id, "reject")}>Reject</button>
+          <button onClick={() => onDecision(event.E_id, 1)}>Approve</button>
+          <button onClick={() => onDecision(event.E_id, 2)}>Reject</button>
         </div>
       )}
     </div>

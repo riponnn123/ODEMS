@@ -10,7 +10,7 @@ const BASE_URL = "http://localhost:7777/api"; // 🛠 replace with your actual b
 const FacultyDashboard = () => {
   const [facultyInfo, setFacultyInfo] = useState(null);
   const [events, setEvents] = useState([]);
-  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -21,41 +21,57 @@ const FacultyDashboard = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       });
-      console.log("Faculty info:", info.data);
+      //console.log("Faculty info:", info.data);
       setFacultyInfo(info.data);
       
 
-      const eventRes = await axios.get(`${BASE_URL}/faculties/requests`, {
-        withCredentials: true,
-      });
-      setEvents(eventRes.data.data);
+      
     } catch (err) {
       console.error("Dashboard load error:", err.message);
     }
   };
+  const fetchStatusEvents=async()=>{
+    try{
+      const eventRes = await axios.get(`${BASE_URL}/faculties/events/with/status`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        // withCredentials: true,
+      });
+      setEvents(eventRes.data);
+      //console.log(eventRes.data);
+      
+    }
+    catch(err){
+      console.error("Error fetching events:", err.message);
+    }
+  }
 
   useEffect(() => {
     fetchData();
+    fetchStatusEvents();
   }, []);
+console.log(events);
 
   return (
-    <div className="faculty-dashboard">
-      <div className="main-grid">
+    <div className="faculty-dashboard bg-red-100 ">
+      <div className="main-grid ">
         <div className="left-column">
           <FacultyInfoBox faculty={facultyInfo} />
         </div>
 
         <div className="right-column">
-          <EventListBox events={events} faculty={facultyInfo} />
+          <EventListBox events={events}  />
         </div>
       </div>
 
       <div className="bottom-grid">
         <div className="create-box">
           <button onClick={() => setShowCreateEvent(!showCreateEvent)}>
-            {showCreateEvent ? "Create New Event" : "Close Event Form" }
+            {showCreateEvent ? "Close Event Form":"Create New Event"  }
           </button>
-          {showCreateEvent && <CreateEvent />}
+          {showCreateEvent && <CreateEvent showCreateEvent/>}
         </div>
         <UpcomingEventsBox />
       </div>

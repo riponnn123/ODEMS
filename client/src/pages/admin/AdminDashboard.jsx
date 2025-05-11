@@ -28,7 +28,7 @@ const AdminDashboard = () => {
 
   const handleDecision = async (eventId, decision) => {
   try {
-    const endpoint = decision === "approve"
+    const endpoint = decision === 1
       ? `${BASE_URL}/admin/approveRequest/${eventId}`
       : `${BASE_URL}/admin/rejectRequest/${eventId}`;
 

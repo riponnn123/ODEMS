@@ -1,7 +1,7 @@
 import React from "react";
 const EventListBox = ({ events }) => {
-  const pending = events.filter(e => e.ConfirmationStatus === 0);
-  const approved = events.filter(e => e.ConfirmationStatus === 1);
+  
+  //console.log(events)
 
   return (
     <div className="event-list-box">
@@ -17,7 +17,7 @@ const EventListBox = ({ events }) => {
             <tr key={event.E_id}>
               <td>{index + 1}</td>
               <td>{event.E_title}</td>
-              <td>{event.ConfirmationStatus === 1 ? "Approved" : "Pending"}</td>
+              <td>{event.ConfirmationStatus === 1 ? "Approved" :event.ConfirmationStatus===0? "Pending":"Rejected"}</td>
               <td>
                 {event.ConfirmationStatus === 1 ? (
                   <a href={`/event/finalize/${event.E_id}`}>Add Details</a>
