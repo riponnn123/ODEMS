@@ -8,7 +8,7 @@ const EventListBox = ({ events }) => {
       <table>
         <thead>
           <tr>
-            <th>No.</th><th>Topic</th><th>Status</th><th>Action</th>
+            <th>No.</th><th>Title</th><th>Status</th><th>Action</th>
           </tr>
         </thead>
         <tbody>

@@ -10,6 +10,7 @@ import FacultyDashboard from './pages/faculty/FacultyDashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import PreEventDetails from "./pages/faculty/PreEventDetails";
 import PostFinalizeEvent from "./pages/faculty/postEventdetails";
+import UpcomingEventsBox from './components/faculty/UpcomingEventsBox';
 
 import './styles/main.css'
 
@@ -40,6 +41,7 @@ const App = () => {
 
           <Route path="/events/prefinalize/:E_id" element={<PreEventDetails />} />
           <Route path="/events/postfinalize/:E_id" element={<PostFinalizeEvent />} />
+          <Route path="/events/upcoming" element={<UpcomingEventsBox />} />
           
           {/* Student Routes */}
           <Route

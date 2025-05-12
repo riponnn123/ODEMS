@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const BASE_URL = "http://localhost:7777/api"; // 🛠 replace with your actual base URL
+import { useNavigate } from "react-router-dom";
+
+const BASE_URL = "http://localhost:7777/api";
 
 const UpcomingEventsBox = () => {
   const [upcoming, setUpcoming] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/event/upcoming`, { headers: { withCredentials: true } })
-      .then(res => setUpcoming(res.data))
-      .catch(err => console.error("Upcoming fetch error", err));
+    axios
+      .get(`${BASE_URL}/events/upcoming`, { withCredentials: true })
+      .then((res) => setUpcoming(res.data))
+      .catch((err) => console.error("Upcoming fetch error", err));
   }, []);
-
-  const handleJoin = async (eventId) => {
-    await axios.post(`${BASE_URL}/participant/join`, {
-      eventId,
-      facultyId: "F123" // 🛠 replace with dynamic ID via context or JWT
-    }, { headers: { withCredentials: true } });
-    alert("You joined the event!");
-  };
 
   return (
     <div className="upcoming-events-box">
-      <h3>Participate Upcoming Events</h3>
-      {upcoming.map((e, i) => (
-        <div key={e.E_id} className="event-row">
-          <span>Event {i + 1}: {e.E_title}</span>
-          <button onClick={() => handleJoin(e.E_id)}>Join</button>
-        </div>
-      ))}
+      <h3>Participating Upcoming Events</h3>
+
+      {upcoming.length === 0 ? (
+        <p>No upcoming events available.</p>
+      ) : (
+        upcoming.map((e, i) => (
+          <div
+            key={e.E_id}
+            className="event-overview-card"
+            onClick={() => navigate(`/events/details/${e.E_id}`)}
+          >
+            <h4>{e.E_title}</h4>
+            <p><strong>Date:</strong> {new Date(e.Date).toLocaleDateString("en-IN")}</p>
+            <p><strong>Time:</strong> {e.Time}</p>
+            <p><strong>Venue:</strong> {e.V_name || e.V_id}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
+
 export default UpcomingEventsBox;

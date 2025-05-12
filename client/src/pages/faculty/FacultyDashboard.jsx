@@ -23,13 +23,12 @@ const FacultyDashboard = () => {
       });
       //console.log("Faculty info:", info.data);
       setFacultyInfo(info.data);
-      
-
-      
     } catch (err) {
       console.error("Dashboard load error:", err.message);
     }
   };
+
+
   const fetchStatusEvents=async()=>{
     try{
       const eventRes = await axios.get(`${BASE_URL}/faculties/events/with/status`, {
@@ -52,7 +51,6 @@ const FacultyDashboard = () => {
     fetchData();
     fetchStatusEvents();
   }, []);
-console.log(events);
 
   return (
     <div className="faculty-dashboard bg-red-100 ">

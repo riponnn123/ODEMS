@@ -187,3 +187,69 @@ exports.postEventDetails = async (req, res) => {
   }
 };
 
+
+exports.getUpcomingEventsWithDetails = async (req, res) => {
+  try {
+     console.log("➡️ Route hit: /api/events/upcoming"); // ✅ add this
+
+    const [events] = await pool.query(
+      `SELECT E.*, V.V_name FROM Event E
+       JOIN Venue V ON E.V_id = V.V_id
+       WHERE E.ConfirmationStatus = 1 AND E.Date >= CURDATE()`
+    );
+
+    console.log("✅ Events fetched:", events); // ✅ log event data
+    // ✅ Return empty list if no events
+    if (events.length === 0) {
+      return res.status(200).json([]);
+    } 
+
+    const detailedEvents = await Promise.all(events.map(async (event) => {
+      let details = {};
+
+      if (event.E_type === "Meeting") {
+        const [[meeting]] = await pool.query(
+          "SELECT Agenda FROM Meeting WHERE E_id = ?", [event.E_id]
+        );
+        details = meeting || {};
+      }
+
+      else if (event.E_type === "Workshop") {
+        const [[workshop]] = await pool.query(
+          "SELECT Workshop_id FROM Workshop WHERE E_id = ?", [event.E_id]
+        );
+        if (workshop) {
+          const [topics] = await pool.query("SELECT Topic FROM Workshop_Topics WHERE Workshop_id = ?", [workshop.Workshop_id]);
+          const [trainers] = await pool.query("SELECT Trainer_Name FROM Workshop_Trainers WHERE Workshop_id = ?", [workshop.Workshop_id]);
+          details = {
+            Topics: topics.map(t => t.Topic),
+            Trainers: trainers.map(t => t.Trainer_Name)
+          };
+        }
+      }
+
+     
+
+      else if (event.E_type === "Conferences") {
+        const [[conference]] = await pool.query(
+          "SELECT Conference_id, Theme FROM Conference WHERE E_id = ?", [event.E_id]
+        );
+        if (conference) {
+          const [speakers] = await pool.query("SELECT Speaker_Name FROM Conference_Speakers WHERE Conference_id = ?", [conference.Conference_id]);
+          details = {
+            Theme: conference.Theme,
+            Speakers: speakers.map(s => s.Speaker_Name)
+          };
+        }
+      }
+
+      return { ...event, ...details };
+    }));
+
+    res.status(200).json(detailedEvents);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
