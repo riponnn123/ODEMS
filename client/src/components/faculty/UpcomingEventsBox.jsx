@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,10 +9,21 @@ const UpcomingEventsBox = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
     axios
-      .get(`${BASE_URL}/events/upcoming`, { withCredentials: true })
+      .get(`${BASE_URL}/events/upcoming`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => setUpcoming(res.data))
-      .catch((err) => console.error("Upcoming fetch error", err));
+      .catch((err) => {
+        console.error("Upcoming fetch error", err);
+        setUpcoming([]);
+      });
   }, []);
 
   return (
@@ -29,9 +40,16 @@ const UpcomingEventsBox = () => {
             onClick={() => navigate(`/events/details/${e.E_id}`)}
           >
             <h4>{e.E_title}</h4>
-            <p><strong>Date:</strong> {new Date(e.Date).toLocaleDateString("en-IN")}</p>
-            <p><strong>Time:</strong> {e.Time}</p>
-            <p><strong>Venue:</strong> {e.V_name || e.V_id}</p>
+            <p>
+              <strong>Date:</strong>{" "}
+              {new Date(e.Date).toLocaleDateString("en-IN")}
+            </p>
+            <p>
+              <strong>Time:</strong> {e.Time}
+            </p>
+            <p>
+              <strong>Venue:</strong> {e.V_name || e.V_id}
+            </p>
           </div>
         ))
       )}

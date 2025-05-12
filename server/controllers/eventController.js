@@ -43,7 +43,7 @@ exports.getAllEvents = async (req, res) => {
 
 exports.getEventById = async (req, res) => {
   const { E_id } = req.params;
-
+  //console.log("Event ID:", E_id); // ✅ log event ID
   try {
     const [rows] = await pool.query(
       "SELECT * FROM Event WHERE E_id = ?",
@@ -141,7 +141,6 @@ exports.preEventDetails = async (req, res) => {
 exports.postEventDetails = async (req, res) => {
   const { E_id } = req.params;
   const { Minutes, Sessions, Papers } = req.body;
-
   try {
     const [[event]] = await pool.query("SELECT * FROM Event WHERE E_id = ?", [E_id]);
 
@@ -189,16 +188,15 @@ exports.postEventDetails = async (req, res) => {
 
 
 exports.getUpcomingEventsWithDetails = async (req, res) => {
+  //console.log("LEAVME")
   try {
-     console.log("➡️ Route hit: /api/events/upcoming"); // ✅ add this
-
     const [events] = await pool.query(
       `SELECT E.*, V.V_name FROM Event E
        JOIN Venue V ON E.V_id = V.V_id
        WHERE E.ConfirmationStatus = 1 AND E.Date >= CURDATE()`
     );
 
-    console.log("✅ Events fetched:", events); // ✅ log event data
+    //console.log("✅ Events fetched:", events); // ✅ log event data
     // ✅ Return empty list if no events
     if (events.length === 0) {
       return res.status(200).json([]);
@@ -227,9 +225,6 @@ exports.getUpcomingEventsWithDetails = async (req, res) => {
           };
         }
       }
-
-     
-
       else if (event.E_type === "Conferences") {
         const [[conference]] = await pool.query(
           "SELECT Conference_id, Theme FROM Conference WHERE E_id = ?", [event.E_id]

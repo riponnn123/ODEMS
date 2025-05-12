@@ -14,7 +14,7 @@ const FinalizeEvent = () => {
   //const [submitting, setSubmitting] = useState(false); // 🔹 added
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/events/${E_id}`)
+    axios.get(`${BASE_URL}/events/get-event/${E_id}`)
       .then(res => setEvent(res.data))
       .catch(err => console.error("Event fetch error", err));
   }, [E_id]);
