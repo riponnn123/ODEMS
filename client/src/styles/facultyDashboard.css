@@ -28,14 +28,21 @@
   gap: 24px;
   margin-top: 20px;
 }
-.create-box,
+.create-box{
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+  background-color: #9871dd;
+}
 .upcoming-events-box {
   flex: 1;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 8px;
-  margin-top: 0%;
   background-color: #8b58e3;
+  overflow-y: auto;
 }
 table {
   width: 100%;

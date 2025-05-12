@@ -1,0 +1,61 @@
+.dashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.student-info {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.info-item {
+  flex: 1 1 200px;
+  background-color: #ecf0f1;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.dashboard-section {
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.dashboard-section h3 {
+  font-size: 1.4rem;
+  color: #34495e;
+  margin-bottom: 1rem;
+}
+
+.loading,
+.error-message {
+  text-align: center;
+  font-weight: bold;
+  color: red;
+}
+
+@media screen and (max-width: 600px) {
+  .info-grid {
+    flex-direction: column;
+  }
+}

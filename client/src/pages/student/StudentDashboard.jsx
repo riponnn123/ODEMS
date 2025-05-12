@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_ENDPOINTS } from '../../config/api';
 import '../../styles/main.css';
+
+const BASE_URL = "http://localhost:7777/api"; 
 
 const StudentDashboard = () => {
   const [studentInfo, setStudentInfo] = useState(null);
@@ -13,28 +14,23 @@ const StudentDashboard = () => {
   }, []);
 
   const fetchStudentInfo = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No token found. Please log in again.');
-      }
+  try {
+    console.log("token in localStorage:", localStorage.getItem("token"));
+    const response = await axios.get(`${BASE_URL}/students/info`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setStudentInfo(response.data);
+  } catch (err) {
+    console.error("Dashboard load error:", err.message);
+    setError(err.response?.data?.message || err.message || "An error occurred.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      const response = await axios.get(API_ENDPOINTS.STUDENT.GET_INFO, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.status === 200) {
-        setStudentInfo(response.data);
-        setError('');
-      } else {
-        throw new Error('Failed to fetch student information.');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message || 'An error occurred.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return <div className="loading">Loading...</div>;

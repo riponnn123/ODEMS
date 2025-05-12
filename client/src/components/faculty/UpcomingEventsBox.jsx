@@ -33,7 +33,7 @@ const UpcomingEventsBox = () => {
       {upcoming.length === 0 ? (
         <p>No upcoming events available.</p>
       ) : (
-        upcoming.map((e, i) => (
+        upcoming.map((e) => (
           <div
             key={e.E_id}
             className="event-overview-card"

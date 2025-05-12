@@ -1,4 +1,3 @@
-const { validationResult } = require("express-validator");
 const {pool} = require("../config/db")
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
@@ -49,10 +48,10 @@ exports.studentLogin = async (req, res) => {
 
 exports.getStudentInfo = async (req, res) => {
   try {
-    const studentId = req.user.id; // Get student ID from the authenticated user
+    const {S_rollno} = req.user; // Get student ID from the authenticated user
     const [rows] = await pool.query(
       "SELECT S_rollno, S_fname, S_lname, S_email FROM Student WHERE S_rollno = ?",
-      [studentId]
+      [S_rollno]
     );
     
     if (rows.length === 0) {
