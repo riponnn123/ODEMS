@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/main.css';
 
 const BASE_URL = "http://localhost:7777/api"; 
 
@@ -16,13 +15,15 @@ const StudentDashboard = () => {
   const fetchStudentInfo = async () => {
   try {
     console.log("token in localStorage:", localStorage.getItem("token"));
-    const response = await axios.get(`${BASE_URL}/students/info`, {
+    console.log("Fetching student info...with token:", localStorage.getItem("token"));
+    
+    const info = await axios.get(`${BASE_URL}/students/info`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    setStudentInfo(response.data);
+    setStudentInfo(info.data);
   } catch (err) {
     console.error("Dashboard load error:", err.message);
     setError(err.response?.data?.message || err.message || "An error occurred.");

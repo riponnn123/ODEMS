@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
         break;
       case 'student':
         table = 'Student';
-        idField = 'S_id';
+        idField = 'S_rollno';
         emailField = 'S_email';
         passwordField = 'S_password';
         break;
@@ -37,6 +37,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ error: 'Incorrect password' });
 
     const token = generateToken({ id: user[0][idField], role });
+    //console.log("sddbbshds",user[0][idField]);
     res.json({ token, role });
   } catch (err) {
     res.status(500).json({ error: err.message });

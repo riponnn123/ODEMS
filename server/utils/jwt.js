@@ -52,8 +52,10 @@ exports.verifyToken = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    //console.log("Decoded JWT:", decoded); // Log the decoded JWT for debugging
 
     const userId = decoded.id;
+    //console.log("User ID from JWT:", userId); // Log the user ID for debugging
     const role = decoded.role;
 
     if (role === "faculty") {

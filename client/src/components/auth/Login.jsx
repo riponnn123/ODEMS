@@ -29,6 +29,7 @@ const Login = () => {
       
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
+      console.log("Token stored in localStorage:", response.data.token);
       
       // Navigate based on role
       switch(response.data.role) {
