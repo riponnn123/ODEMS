@@ -4,6 +4,7 @@
 @import './adminDashboard.css';
 @import './eventFinalize.css';
 @import './upcmingEventBox.css';
+@import './eventDetails.css';
 
 /* Reset and base styles */
 * {

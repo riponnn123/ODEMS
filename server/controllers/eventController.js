@@ -252,47 +252,60 @@ exports.getUpcomingEventsWithDetails = async (req, res) => {
 
 exports.getFullEventDetailsById = async (req, res) => {
   const { E_id } = req.params;
+
   try {
-    const [[event]] = await pool.query(
-      `SELECT E.*, V.V_name FROM Event E JOIN Venue V ON E.V_id = V.V_id WHERE E.E_id = ?`,
-      [E_id]
-    );
+    // Get base event details
+    const [[event]] = await pool.query(`
+      SELECT E.*, V.V_name 
+      FROM Event E
+      JOIN Venue V ON E.V_id = V.V_id
+      WHERE E.E_id = ?
+    `, [E_id]);
 
     if (!event) return res.status(404).json({ message: "Event not found" });
 
-    let details = {};
+    const fullEvent = { ...event };
 
+    // Append pre-final details based on event type
     if (event.E_type === "Meeting") {
-      const [[meeting]] = await pool.query("SELECT Agenda FROM Meeting WHERE E_id = ?", [E_id]);
-      const [members] = await pool.query("SELECT Member_Name FROM Meeting_Members WHERE Meeting_id = (SELECT Meeting_id FROM Meeting WHERE E_id = ?)", [E_id]);
-      const [points] = await pool.query("SELECT Point FROM Meeting_Points WHERE Meeting_id = (SELECT Meeting_id FROM Meeting WHERE E_id = ?)", [E_id]);
-      details = {
-        Agenda: meeting?.Agenda || '',
-        Members: members.map(m => m.Member_Name),
-        Points: points.map(p => p.Point)
-      };
-    }
+      const [[meeting]] = await pool.query(`SELECT Agenda FROM Meeting WHERE E_id = ?`, [E_id]);
+      const [members] = await pool.query(`SELECT Member_Name FROM Meeting_Members WHERE Meeting_id IN (SELECT Meeting_id FROM Meeting WHERE E_id = ?)`, [E_id]);
+      const [points] = await pool.query(`SELECT Point FROM Meeting_Points WHERE Meeting_id IN (SELECT Meeting_id FROM Meeting WHERE E_id = ?)`, [E_id]);
 
-    else if (event.E_type === "Workshop") {
-      const [[workshop]] = await pool.query("SELECT Workshop_id FROM Workshop WHERE E_id = ?", [E_id]);
-      const [topics] = await pool.query("SELECT Topic FROM Workshop_Topics WHERE Workshop_id = ?", [workshop.Workshop_id]);
-      const [trainers] = await pool.query("SELECT Trainer_Name FROM Workshop_Trainers WHERE Workshop_id = ?", [workshop.Workshop_id]);
-      details = {
-        Topics: topics.map(t => t.Topic),
-        Trainers: trainers.map(t => t.Trainer_Name)
-      };
-    }
+      fullEvent.Agenda = meeting?.Agenda || "";
+      fullEvent.Members = members.map(m => m.Member_Name);
+      fullEvent.Points = points.map(p => p.Point);
 
-    else if (event.E_type === "Conferences") {
-      const [[conference]] = await pool.query("SELECT Theme FROM Conference WHERE E_id = ?", [E_id]);
-      const [speakers] = await pool.query("SELECT Speaker_Name FROM Conference_Speakers WHERE Conference_id = (SELECT Conference_id FROM Conference WHERE E_id = ?)", [E_id]);
-      details = {
-        Theme: conference?.Theme || '',
-        Speakers: speakers.map(s => s.Speaker_Name)
-      };
-    }
+    } else if (event.E_type === "Workshop") {
+  const [[workshop]] = await pool.query(
+    `SELECT Workshop_id FROM Workshop WHERE E_id = ?`, [E_id]
+  );
 
-    res.status(200).json({ ...event, ...details });
+  const [topics] = await pool.query(
+    `SELECT Topic FROM Workshop_Topics WHERE Workshop_id IN (SELECT Workshop_id FROM Workshop WHERE E_id = ?)`, [E_id]
+  );
+
+  const [trainers] = await pool.query(
+    `SELECT Trainer_Name FROM Workshop_Trainers WHERE Workshop_id IN (SELECT Workshop_id FROM Workshop WHERE E_id = ?)`, [E_id]
+  );
+
+  fullEvent.Topics = topics.map(t => t.Topic);
+  fullEvent.Trainers = trainers.map(t => t.Trainer_Name);
+}
+else if (event.E_type === "Conferences") {
+  const [[conference]] = await pool.query(
+    `SELECT Theme FROM Conference WHERE E_id = ?`, [E_id]
+  );
+
+  const [speakers] = await pool.query(
+    `SELECT Speaker_Name FROM Conference_Speakers WHERE Conference_id IN (SELECT Conference_id FROM Conference WHERE E_id = ?)`, [E_id]
+  );
+
+  fullEvent.Theme = conference?.Theme || "";
+  fullEvent.Speakers = speakers.map(s => s.Speaker_Name);
+}
+
+    res.status(200).json(fullEvent);
   } catch (err) {
     console.error("Get Event by ID Error:", err);
     res.status(500).json({ error: err.message });
