@@ -11,8 +11,8 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import PreEventDetails from "./pages/faculty/PreEventDetails";
 import PostFinalizeEvent from "./pages/faculty/postEventdetails";
 import UpcomingEventsBox from './components/faculty/UpcomingEventsBox';
-
-import './styles/main.css'
+import EventDetails from "./components/EventDetails";
+import'./styles/main.css'
 
 // Protected Route component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -42,6 +42,7 @@ const App = () => {
           <Route path="/events/prefinalize/:E_id" element={<PreEventDetails />} />
           <Route path="/events/postfinalize/:E_id" element={<PostFinalizeEvent />} />
           <Route path="/events/upcoming" element={<UpcomingEventsBox />} />
+          <Route path="/events/details/:E_id" element={<EventDetails />} />
           
           {/* Student Routes */}
           <Route

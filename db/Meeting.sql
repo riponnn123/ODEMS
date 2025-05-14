@@ -29,5 +29,7 @@ USE odems;
 SELECT * FROM Meeting;
 SELECT * FROM Meeting_Members;
 SELECT * FROM Meeting_Points;
+DELETE FROM meeting;
+
 
 

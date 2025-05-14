@@ -1,72 +1,69 @@
-const { pool } = require('../config/db');
+const { pool } = require("../config/db");
+const nodemailer = require("nodemailer");
 
-// Get all participants for a specific event
-exports.getEventParticipants = async (req, res) => {
-  const { eventId } = req.params;
-  try {
-    const [participants] = await pool.query(`
-      SELECT 
-        p.P_id,
-        s.S_name as student_name,
-        s.S_email as student_email,
-        s.S_department as student_department,
-        p.P_registration_date
-      FROM Participant p
-      JOIN Student s ON p.S_id = s.S_id
-      WHERE p.E_id = ?
-    `, [eventId]);
 
-    res.json(participants);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Register a student for an event
 exports.registerParticipant = async (req, res) => {
-  const { eventId, studentId } = req.body;
+  const { E_id } = req.body;
+  const user = req.user;
+
   try {
-    // Check if student is already registered
-    const [existing] = await pool.query(
-      'SELECT * FROM Participant WHERE E_id = ? AND S_id = ?',
-      [eventId, studentId]
+    await pool.query(
+      `INSERT INTO Participant (E_id, user_id, user_role) VALUES (?, ?, ?)`,
+      [E_id, user.F_id || user.S_id, user.role]
     );
 
-    if (existing.length > 0) {
-      return res.status(400).json({ error: 'Student is already registered for this event' });
-    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
-    // Register the student
-    const [result] = await pool.query(
-      'INSERT INTO Participant (E_id, S_id, P_registration_date) VALUES (?, ?, NOW())',
-      [eventId, studentId]
-    );
+    await transporter.sendMail({
+      from: process.env.MAIL_USER,
+      to: user.F_email || user.S_email,
+      subject: "Event Registration Confirmation",
+      html: `<p>You have successfully registered for event <strong>${E_id}</strong>.</p>`,
+    });
 
-    res.status(201).json({ message: 'Registration successful' });
+    res.status(200).json({ message: "Registration successful, email sent" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Get all events a student is registered for
-exports.getStudentEvents = async (req, res) => {
-  const { studentId } = req.params;
-  try {
-    const [events] = await pool.query(`
-      SELECT 
-        e.E_id,
-        e.E_title,
-        e.E_type,
-        e.E_date,
-        e.E_venue,
-        e.E_status,
-        p.P_registration_date
-      FROM Event e
-      JOIN Participant p ON e.E_id = p.E_id
-      WHERE p.S_id = ?
-    `, [studentId]);
+exports.getRegisteredEventsForStudent = async (req, res) => {
+  const { S_id } = req.user;  // populated by verifyToken
 
-    res.json(events);
+  try {
+    const [events] = await pool.query(
+      `SELECT E.E_id, E.E_title, E.Date, E.Time, V.V_name
+       FROM Participant P
+       JOIN Event E ON P.E_id = E.E_id
+       JOIN Venue V ON E.V_id = V.V_id
+       WHERE P.S_id = ?`,
+      [S_id]
+    );
+    res.status(200).json(events);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getRegisteredEventsForFaculty = async (req, res) => {
+  const { F_id } = req.user;  // populated by verifyToken
+
+  try {
+    const [events] = await pool.query(
+      `SELECT E.E_id, E.E_title, E.Date, E.Time, V.V_name
+       FROM Participant P
+       JOIN Event E ON P.E_id = E.E_id
+       JOIN Venue V ON E.V_id = V.V_id
+       WHERE P.F_id = ?`,
+      [F_id]
+    );
+    res.status(200).json(events);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
