@@ -16,15 +16,15 @@ const Home = () => {
           <div className="flex gap-2 mt-1">
             <div className="card">
               <h3>Event Creation</h3>
-              <p>Efficiently manage and organize your documents</p>
+              <p>Bring your ideas to life by creating events that inspire and engage.</p>
             </div>
             <div className="card">
               <h3>Event Managing</h3>
-              <p>Track and monitor document requests</p>
+              <p>Stay in control—manage your events seamlessly from start to finish.</p>
             </div>
             <div className="card">
               <h3>Participate Your Favourite Events</h3>
-              <p>Secure and controlled access to documents</p>
+              <p>Join the excitement—participate in your favorite events and make every moment count!</p>
             </div>
           </div>
         </div>

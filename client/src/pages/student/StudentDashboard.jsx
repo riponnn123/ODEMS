@@ -56,7 +56,7 @@ const StudentDashboard = () => {
         </div>
 
         <div className="grid-item">
-          <h3 className="box-title">Participating Upcoming Events</h3>
+          <h3 className="box-title"></h3>
           <UpcomingEventsBox />
         </div>
 
@@ -66,7 +66,7 @@ const StudentDashboard = () => {
         </div>
 
         <div className="grid-item">
-          <h3 className="box-title">Registered Events</h3>
+          <h3 className="box-title"></h3>
           <RegisteredEventsBox />
         </div>
       </div>

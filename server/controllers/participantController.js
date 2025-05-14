@@ -93,22 +93,27 @@ exports.registerParticipant = async (req, res) => {
 };
 
 exports.getRegisteredEventsForStudent = async (req, res) => {
-  const { S_id } = req.user; // populated by verifyToken
+  const { role, S_rollno, F_id } = req.user;
 
   try {
-    const [events] = await pool.query(
-      `SELECT E.E_id, E.E_title, E.Date, E.Time, V.V_name
-       FROM Participant P
-       JOIN Event E ON P.E_id = E.E_id
-       JOIN Venue V ON E.V_id = V.V_id
-       WHERE P.S_id = ?`,
-      [S_id]
+    const userCol = role === "student" ? "S_rollno" : "F_id";
+    const userId = role === "student" ? S_rollno : F_id;
+
+    const [rows] = await pool.query(
+      `SELECT E.*, V.V_name FROM Participant P 
+       JOIN Event E ON P.E_id = E.E_id 
+       JOIN Venue V ON E.V_id = V.V_id 
+       WHERE P.${userCol} = ?`,
+      [userId]
     );
-    res.status(200).json(events);
+
+    res.status(200).json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Get Registered Events Error:", err.message);
+    res.status(500).json({ error: "Failed to fetch registered events." });
   }
 };
+
 
 exports.getRegisteredEventsForFaculty = async (req, res) => {
   const { F_id } = req.user; // populated by verifyToken
