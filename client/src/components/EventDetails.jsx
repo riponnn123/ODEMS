@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 const BASE_URL = "http://localhost:7777/api";
 
 const EventDetails = () => {
@@ -15,9 +14,12 @@ const EventDetails = () => {
     const fetchDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`${BASE_URL}/events/event-details/${E_id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const res = await axios.get(
+          `${BASE_URL}/events/event-details/${E_id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setEvent(res.data);
       } catch (err) {
         console.error("Error fetching event details:", err);
@@ -32,9 +34,13 @@ const EventDetails = () => {
   const handleRegister = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`${BASE_URL}/participant/register`, { E_id }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await axios.post(
+        `${BASE_URL}/participants/register`,
+        { E_id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       alert("Registered successfully!");
       navigate("/student/dashboard");
     } catch (err) {
@@ -49,24 +55,45 @@ const EventDetails = () => {
   return (
     <div className="event-details-container">
       <h2>{event.E_title}</h2>
-      <p><strong>Type:</strong> {event.E_type}</p>
-      <p><strong>Organizer:</strong> {event.Organizer}</p>
-      <p><strong>Date:</strong> {new Date(event.Date).toLocaleDateString("en-IN")}</p>
-      <p><strong>Time:</strong> {event.Time}</p>
-      <p><strong>Duration:</strong> {event.Duration} hrs</p>
-      <p><strong>Venue:</strong> {event.V_name}</p>
+      <p>
+        <strong>Type:</strong> {event.E_type}
+      </p>
+      <p>
+        <strong>Organizer:</strong> {event.Organizer}
+      </p>
+      <p>
+        <strong>Date:</strong>{" "}
+        {new Date(event.Date).toLocaleDateString("en-IN")}
+      </p>
+      <p>
+        <strong>Time:</strong> {event.Time}
+      </p>
+      <p>
+        <strong>Duration:</strong> {event.Duration} hrs
+      </p>
+      <p>
+        <strong>Venue:</strong> {event.V_name}
+      </p>
 
       {event.E_type === "Meeting" && (
         <>
-          <h4>Agenda:</h4>
-          <p>{event.Agenda}</p>
+          {event.Agenda && (
+            <div className="section">
+              <h4>Agenda:</h4>
+              <p style={{ whiteSpace: "pre-wrap" }}>{event.Agenda}</p>
+            </div>
+          )}
           <h4>Members:</h4>
           <ul>
-            {event.Members?.map((m, i) => <li key={i}>{m}</li>)}
+            {event.Members?.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
           <h4>Points to Discuss:</h4>
           <ul>
-            {event.Points?.map((p, i) => <li key={i}>{p}</li>)}
+            {event.Points?.map((p, i) => (
+              <li key={i}>{p}</li>
+            ))}
           </ul>
         </>
       )}
@@ -75,22 +102,32 @@ const EventDetails = () => {
         <>
           <h4>Topics:</h4>
           <ul>
-            {event.Topics?.map((t, i) => <li key={i}>{t}</li>)}
+            {event.Topics?.map((t, i) => (
+              <li key={i}>{t}</li>
+            ))}
           </ul>
           <h4>Trainers:</h4>
           <ul>
-            {event.Trainers?.map((tr, i) => <li key={i}>{tr}</li>)}
+            {event.Trainers?.map((tr, i) => (
+              <li key={i}>{tr}</li>
+            ))}
           </ul>
         </>
       )}
 
       {event.E_type === "Conferences" && (
         <>
-          <h4>Theme:</h4>
-          <p>{event.Theme}</p>
+          {event.Theme && (
+            <div className="section">
+              <h4>Theme:</h4>
+              <p style={{ whiteSpace: "pre-wrap" }}>{event.Theme}</p>
+            </div>
+          )}
           <h4>Speakers:</h4>
           <ul>
-            {event.Speakers?.map((s, i) => <li key={i}>{s}</li>)}
+            {event.Speakers?.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
           </ul>
         </>
       )}
