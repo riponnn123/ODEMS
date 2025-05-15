@@ -52,28 +52,40 @@ const FacultyDashboard = () => {
     fetchStatusEvents();
   }, []);
 
-  return (
-    <div className="faculty-dashboard bg-red-100 ">
-      <div className="main-grid ">
-        <div className="left-column">
-          <FacultyInfoBox faculty={facultyInfo} />
-        </div>
+return (
+  <div className="faculty-dashboard">
+    <h2 className="dashboard-title">Faculty Dashboard</h2>
 
-        <div className="right-column">
-          <EventListBox events={events}  />
-        </div>
+    <div className="main-grid">
+      <div className="dashboard-box">
+        <h3 className="box-title">Faculty Info</h3>
+        <FacultyInfoBox faculty={facultyInfo} />
       </div>
 
-      <div className="bottom-grid">
-        <div className="create-box">
-          <button onClick={() => setShowCreateEvent(!showCreateEvent)}>
-            {showCreateEvent ? "Close Event Form":"Create New Event"  }
-          </button>
-          {showCreateEvent && <CreateEvent showCreateEvent/>}
+      <div className="dashboard-box">
+        <h3 className="box-title">Your Event List</h3>
+        <div className="event-list-table">
+          <EventListBox events={events} />
         </div>
+      </div>
+    </div>
+
+    <div className="bottom-grid">
+      <div className="create-box">
+        <h3 className="box-title">Create New Event</h3>
+        <button onClick={() => setShowCreateEvent(!showCreateEvent)}>
+          {showCreateEvent ? "Close Form" : "Create New Event"}
+        </button>
+        {showCreateEvent && <CreateEvent showCreateEvent />}
+      </div>
+
+      <div className="dashboard-box">
+        <h3 className="box-title">Upcoming Events</h3>
         <UpcomingEventsBox />
       </div>
     </div>
+  </div>
+
   );
 };
 

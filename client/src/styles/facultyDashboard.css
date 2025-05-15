@@ -1,82 +1,194 @@
+/* facultyDashboard.css */
+
 .faculty-dashboard {
-  font-family: sans-serif;
-  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f2f9ff, #ffffff);
+  min-height: 100vh;
+  padding: 40px 60px;
+  color: #333;
+  max-width: 1400px;
+  margin: 0 auto;
 }
+
+.dashboard-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1d4ed8;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(29, 78, 216, 0.15);
+}
+
+/* Main Grid */
 .main-grid {
-  display: flex;
-  gap: 24px;
-  margin-top: 20px;
-  
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  margin-bottom: 30px;
 }
-.left-column {
-  flex: 1;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  height: fit-content;
+
+/* Shared Box Style */
+.dashboard-box {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  transition: 0.3s ease;
 }
-.right-column {
-  flex: 1;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  height: 180px;
+
+.dashboard-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Event List Table Container with Scroll */
+.event-list-table {
+  max-height: 250px;
   overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
 }
+
+.event-list-table::-webkit-scrollbar {
+  width: 8px;
+}
+.event-list-table::-webkit-scrollbar-thumb {
+  background: #c4dfff;
+  border-radius: 10px;
+}
+
+/* Bottom Grid */
 .bottom-grid {
-  display: flex;
-  gap: 24px;
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
 }
-.create-box{
-  flex: 1;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  height: fit-content;
-  background-color: #9871dd;
+
+/* Title Style */
+.box-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #2563eb;
+  border-bottom: 2px solid #c4dfff;
+  padding-bottom: 8px;
 }
-.upcoming-events-box {
-  flex: 1;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #8b58e3;
-  overflow-y: auto;
+
+/* Responsive */
+@media (max-width: 960px) {
+  .main-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faculty-dashboard {
+    padding: 20px;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+  }
 }
-table {
+
+/* Event List Table Structure */
+.event-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
-table th,
-table td {
+
+.event-table th,
+.event-table td {
   border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-table th {
-  background: #f0f0f0;
-}
-.create-event-form input,
-.create-event-form select,
-.create-event-form button {
-  width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  text-align: left;
+  font-size: 0.95rem;
 }
-.event-row {
+
+.event-table th {
+  background-color: #f0f4ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.event-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.event-table a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.event-table a:hover {
+  text-decoration: underline;
+}
+
+.create-box {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  height: fit-content; /* Fixed height */
+  display: block; /* No flex needed here */
+  overflow: visible; /* Ensure content is visible */
+}
+
+/* Create Event Form Styling */
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.create-form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-form label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.create-form input,
+.create-form select {
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.create-form-buttons {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin-top: 12px;
 }
-button {
-  background-color: #0052cc;
+
+.create-form button {
+  background-color: #2563eb;
   color: white;
+  padding: 10px 20px;
   border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
 }
-button:hover {
-  background-color: #003d99;
+
+.create-form button:hover {
+  background-color: #1d4ed8;
 }
+
+.create-form .close-btn {
+  background-color: #e11d48;
+}
+
+.create-form .close-btn:hover {
+  background-color: #be123c;
+}
+

@@ -28,7 +28,7 @@ const UpcomingEventsBox = () => {
 
   return (
     <div className="upcoming-events-box">
-      <h3>Participating Upcoming Events</h3>
+      <h3>Participate Upcoming Events</h3>
 
       {upcoming.length === 0 ? (
         <p>No upcoming events available.</p>

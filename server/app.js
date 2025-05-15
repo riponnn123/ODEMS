@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:5173", // your frontend port
+  origin: "http://localhost:3000", // your frontend port
   credentials: true
 }));
 

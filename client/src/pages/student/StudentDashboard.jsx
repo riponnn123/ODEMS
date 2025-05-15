@@ -38,39 +38,38 @@ const StudentDashboard = () => {
 
   return (
     <div className="student-dashboard">
-      <h2 className="dashboard-title">Student Dashboard</h2>
-      {error && <div className="error-message">{error}</div>}
+  <h2 className="dashboard-title">Student Dashboard</h2>
+  {error && <div className="error-message">{error}</div>}
 
-      <div className="dashboard-grid">
-        <div className="grid-item">
-          <h3 className="box-title">Student Info</h3>
-          {studentInfo ? (
-            <div className="info-content">
-              <p><strong>Name:</strong> {studentInfo.S_name}</p>
-              <p><strong>ID:</strong> {studentInfo.S_id}</p>
-              <p><strong>Email:</strong> {studentInfo.S_email}</p>
-            </div>
-          ) : (
-            <p>No student information available.</p>
-          )}
-        </div>
-
-        <div className="grid-item">
-          <h3 className="box-title"></h3>
-          <UpcomingEventsBox />
-        </div>
-
-        <div className="grid-item">
-          <h3 className="box-title">News & Notifications</h3>
-          <NewsBox />
-        </div>
-
-        <div className="grid-item">
-          <h3 className="box-title"></h3>
-          <RegisteredEventsBox />
-        </div>
+  <div className="student-info-box">
+    <h3>Student Info</h3>
+    {studentInfo ? (
+      <div className="info-content">
+        <p><strong>Name:</strong> {studentInfo.S_name}</p>
+        <p><strong>ID:</strong> {studentInfo.S_id}</p>
+        <p><strong>Email:</strong> {studentInfo.S_email}</p>
       </div>
+    ) : (
+      <p>No student information available.</p>
+    )}
+  </div>
+
+  <div className="full-width-box">
+    <h3>Upcoming Events</h3>
+    <UpcomingEventsBox />
+  </div>
+
+  <div className="bottom-grid">
+    <div className="grid-item">
+      <h3>News & Notifications</h3>
+      <NewsBox />
     </div>
+    <div className="grid-item">
+      <RegisteredEventsBox />
+    </div>
+  </div>
+</div>
+
   );
 };
 
