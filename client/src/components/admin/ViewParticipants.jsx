@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:7777/api";
@@ -10,47 +10,62 @@ const ViewParticipants = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    axios.get(`${BASE_URL}/admin/participants/${E_id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => setParticipants(res.data))
-    .catch(err => console.error("Fetch error:", err));
+    const fetchParticipants = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${BASE_URL}/admin/participants/${E_id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setParticipants(response.data);
+        console.log("Participants fetched:", response.data);
+      } catch (err) {
+        console.error("Fetch participants failed:", err.message);
+      }
+    };
+    fetchParticipants();
   }, [E_id]);
 
   const filtered = participants.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.email.toLowerCase().includes(search.toLowerCase())
+    p.email.toLowerCase().includes(search.toLowerCase()) ||
+    p.id.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="participants-page">
-      <h2>Participants for Event #{E_id}</h2>
+      <h2>Participants for Event ID: {E_id}</h2>
       <input
         type="text"
-        placeholder="Search by name/email"
+        placeholder="Search participants..."
         value={search}
-        onChange={e => setSearch(e.target.value)}
-        style={{ padding: "8px", width: "300px", marginBottom: "16px" }}
+        onChange={(e) => setSearch(e.target.value)}
+        className="search-bar"
       />
-      <table className="participants-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((p, i) => (
-            <tr key={i}>
-              <td>{p.name}</td>
-              <td>{p.email}</td>
-              <td>{p.role}</td>
+
+      {filtered.length === 0 ? (
+        <p>No participants found.</p>
+      ) : (
+        <table className="participants-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map((p, i) => (
+              <tr key={i}>
+                <td>{p.role}</td>
+                <td>{p.id}</td>
+                <td>{p.name}</td>
+                <td>{p.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

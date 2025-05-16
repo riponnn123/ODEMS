@@ -5,6 +5,7 @@
 @import './eventFinalize.css';
 @import './upcmingEventBox.css';
 @import './eventDetails.css';
+@import './participants.css';
 
 /* Reset and base styles */
 * {

@@ -113,26 +113,45 @@ exports.getAdminInfo = async (req, res) => {
 
 exports.getParticipantsByEvent = async (req, res) => {
   const { eventId } = req.params;
+  //console.log("Fetching participants for event ID:", eventId);
 
   try {
-    const [rows] = await pool.query(
-      `SELECT 
-        P.Participant_id,
-        P.user_role,
-        F.F_name AS faculty_name,
-        F.F_email AS faculty_email,
-        S.S_name AS student_name,
-        S.S_email AS student_email
+    // Fetch participants with joined student and faculty details
+    const [rows] = await pool.query(`
+      SELECT 
+        P.Participant_id, P.user_role, 
+        S.S_fname AS StudentName, S.S_email AS StudentEmail, S.S_rollno,
+        F.F_fname, F.F_lname, F.F_email, F.F_id
       FROM Participant P
-      LEFT JOIN Faculty F ON P.user_id = F.F_id AND P.user_role = 'faculty'
-      LEFT JOIN Student S ON P.user_id = S.S_rollno AND P.user_role = 'student'
-      WHERE P.E_id = ?`, 
-      [eventId]
-    );
+      LEFT JOIN Student S ON P.S_rollno = S.S_rollno
+      LEFT JOIN Faculty F ON P.F_id = F.F_id
+      WHERE P.E_id = ?
+    `, [eventId]);
 
-    res.json(rows);
+    const participants = rows.map(row => {
+      if (row.user_role === "student") {
+        return {
+          role: "Student",
+          name: row.StudentName,
+          email: row.StudentEmail,
+          id: row.S_rollno
+        };
+      } else if (row.user_role === "faculty") {
+        return {
+          role: "Faculty",
+          name: `${row.F_fname} ${row.F_lname}`,
+          email: row.F_email,
+          id: row.F_id
+        };
+      }
+      return null;
+    }).filter(Boolean);
+
+    res.json(participants);
   } catch (err) {
+    console.error("Fetch Participants Error:", err.message);
     res.status(500).json({ error: "Failed to fetch participants" });
+    console.log("Fetch Participants Error:", err.message);
   }
 };
 
