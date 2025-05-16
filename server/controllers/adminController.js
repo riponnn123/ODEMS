@@ -110,3 +110,67 @@ exports.getAdminInfo = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getParticipantsByEvent = async (req, res) => {
+  const { eventId } = req.params;
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT 
+        P.Participant_id,
+        P.user_role,
+        F.F_name AS faculty_name,
+        F.F_email AS faculty_email,
+        S.S_name AS student_name,
+        S.S_email AS student_email
+      FROM Participant P
+      LEFT JOIN Faculty F ON P.user_id = F.F_id AND P.user_role = 'faculty'
+      LEFT JOIN Student S ON P.user_id = S.S_rollno AND P.user_role = 'student'
+      WHERE P.E_id = ?`, 
+      [eventId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch participants" });
+  }
+};
+
+exports.getAllEvents = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT E.*, V.V_name, F.F_fname, F.F_lname 
+       FROM Event E 
+       JOIN Venue V ON E.V_id = V.V_id 
+       JOIN Faculty F ON E.F_id = F.F_id`
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.updateEventStatus = async (req, res) => {
+  const { status } = req.params;
+  const { E_id } = req.body;
+
+  try {
+    let newStatus;
+    if (status === "approve") newStatus = 1;
+    else if (status === "reject") newStatus = 2;
+    else return res.status(400).json({ error: "Invalid status" });
+
+    await pool.query(
+      `UPDATE Event SET ConfirmationStatus = ? WHERE E_id = ?`,
+      [newStatus, E_id]
+    );
+
+    res.json({ message: `Event ${status}d successfully` });
+  } catch (err) {
+    console.error("Status update error:", err.message);
+    res.status(500).json({ error: "Failed to update status" });
+  }
+};
+
+

@@ -1,0 +1,64 @@
+.participants-page {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.participants-page h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.participants-page input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  margin: 0 auto 20px auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.participants-page input[type="text"]:focus {
+  border-color: #5c6bc0;
+  outline: none;
+  box-shadow: 0 0 5px rgba(92, 107, 192, 0.3);
+}
+
+.participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.participants-table th,
+.participants-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.participants-table th {
+  background-color: #5c6bc0;
+  color: #fff;
+  font-weight: 500;
+}
+
+.participants-table tr:hover {
+  background-color: #f5f5f5;
+  transition: background 0.2s ease-in-out;
+}
+
+.participants-table td {
+  font-size: 0.95rem;
+  color: #333;
+}
