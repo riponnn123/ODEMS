@@ -30,6 +30,8 @@ SELECT * FROM Meeting;
 SELECT * FROM Meeting_Members;
 SELECT * FROM Meeting_Points;
 DELETE FROM meeting;
+delete from Meeting_Members;
+delete from Meeting_points;
 
 
 

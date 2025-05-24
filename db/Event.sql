@@ -16,6 +16,7 @@ CREATE TABLE Event (
 );
 alter table Event drop column A_id;
 select * from event;
+TRUNCATE TABLE events;
 drop table event;
 use odems;
 update event set ConfirmationStatus= false where E_id = 1;

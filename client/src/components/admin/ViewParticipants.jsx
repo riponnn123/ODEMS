@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // this line is critical and must be placed AFTER jsPDF
+import * as XLSX from "xlsx";
 
 
 const BASE_URL = "http://localhost:7777/api";
@@ -39,46 +38,24 @@ const ViewParticipants = () => {
     };
     fetchParticipants();
   }, [E_id]);
-  console.log("autoTable exists:", typeof jsPDF.prototype.autoTable); // should log: function
+  //console.log("autoTable exists:", typeof jsPDF.prototype.autoTable); // should log: function
 
 
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text(`Participants List - ${eventTitle} (ID: ${E_id})`, 14, 15);
+  const downloadExcel = () => {
+  const worksheetData = participants.map((p, i) => ({
+    "#": i + 1,
+    Name: p.name,
+    ID: p.id,
+    Email: p.email,
+    Role: p.role.charAt(0).toUpperCase() + p.role.slice(1),
+  }));
 
-    const tableColumn = ["#", "Name", "Email", "Role"];
-    const tableRows = [];
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
 
-    participants.forEach((p, index) => {
-      const role = p.user_role ?? "Unknown";
-
-      const name =
-        role === "student"
-          ? p.S_name ?? "N/A"
-          : `${p.F_fname ?? ""} ${p.F_lname ?? ""}`.trim();
-
-      const email =
-        role === "student" ? p.S_email ?? "N/A" : p.F_email ?? "N/A";
-
-      tableRows.push([
-        index + 1,
-        name,
-        email,
-        role.charAt(0).toUpperCase() + role.slice(1),
-      ]);
-    });
-
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-    });
-
-    doc.save(`${eventTitle}_Participants.pdf`);
-    console.log("PDF downloaded");
-     // should log "function"
-
-  };
+  XLSX.writeFile(workbook, `Participants_Event_${eventTitle|| "Unknown"}.xlsx`);
+};
 
   const filtered = participants.filter(
     (p) =>
@@ -86,7 +63,7 @@ const ViewParticipants = () => {
       (p.email?.toLowerCase() || "").includes(search.toLowerCase()) ||
       (p.id?.toLowerCase() || "").includes(search.toLowerCase())
   );
-console.log(typeof jsPDF.prototype.autoTable);
+//console.log(typeof jsPDF.prototype.autoTable);
   return (
     <div className="participants-page">
       <h2>
@@ -101,8 +78,8 @@ console.log(typeof jsPDF.prototype.autoTable);
           onChange={(e) => setSearch(e.target.value)}
           className="search-bar"
         />
-        <button onClick={downloadPDF} className="download-btn">
-          Download PDF
+        <button onClick={downloadExcel} className="download-btn">
+          Download Excel
         </button>
       </div>
 

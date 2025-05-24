@@ -80,15 +80,17 @@ const CreateEvent = () => {
       </div>
 
       <div className="create-form-row">
-        <label>Event Date</label>
-        <input
-          type="date"
-          name="Date"
-          value={formData.Date}
-          onChange={handleChange}
-          required
-        />
-      </div>
+  <label>Event Date</label>
+  <input
+    type="date"
+    name="Date"
+    value={formData.Date}
+    onChange={handleChange}
+    required
+    min={new Date().toISOString().split("T")[0]} // sets today as the minimum selectable date
+  />
+</div>
+
 
       <div className="create-form-row">
         <label>Event Time</label>

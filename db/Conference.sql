@@ -23,6 +23,7 @@ drop table conference;
 select * from conference;
 select * from conference_speakers;
 select * from conference;
+DELETE FROM conference_speakers;
 DELETE FROM conference;
 
 

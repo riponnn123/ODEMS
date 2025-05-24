@@ -29,6 +29,8 @@ select * from workshop_topics;
 select * from workshop_trainers;
 drop table Workshop;
 delete from Workshop;
+delete from Workshop_topics;
+delete from Workshop_trainers;
 ALTER TABLE Event
 MODIFY ConfirmationStatus INT DEFAULT 0;
 

@@ -14,17 +14,20 @@ const UpcomingEventsBox = () => {
     if (!token) return;
 
     axios
-      .get(`${BASE_URL}/events/upcoming`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => setUpcoming(res.data))
-      .catch((err) => {
-        console.error("Upcoming fetch error", err);
-        setUpcoming([]);
-      });
-  }, []);
+  .get(`${BASE_URL}/events/upcoming`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((res) => {
+    //console.log("Full upcoming event data:", res.data); // 👈 check this
+    setUpcoming(res.data);
+  })
+  .catch((err) => {
+    console.error("Upcoming fetch error", err);
+    setUpcoming([]);
+  });
+}, []);
 
   return (
     <div className="upcoming-events-box">
