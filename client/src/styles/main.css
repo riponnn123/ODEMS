@@ -6,6 +6,7 @@
 @import './upcmingEventBox.css';
 @import './eventDetails.css';
 @import './participants.css';
+@import './scrollingIcons.css';
 
 /* Reset and base styles */
 * {
@@ -244,23 +245,8 @@ body {
   padding: 2rem;
   background: linear-gradient(to right, #f0f4ff, #dbeafe);
   border-radius: 12px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.homepage-hero img {
-  max-width: 150px;
-  margin-bottom: 1rem;
-  animation: floatUpDown 3s ease-in-out infinite;
-}
-
-@keyframes floatUpDown {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 /* Add any other global styles below */ 

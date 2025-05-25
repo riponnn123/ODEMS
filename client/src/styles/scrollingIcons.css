@@ -1,0 +1,28 @@
+.scrolling-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  background: linear-gradient(to right, #f0f4ff, #dbeafe);
+  padding: 10px 0;
+}
+
+.scrolling-track {
+  display: inline-block;
+  animation: scroll-left 25s linear infinite;
+}
+
+.scroll-icon {
+  height: 150px;
+  width: auto;
+ 
+  vertical-align: middle;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
