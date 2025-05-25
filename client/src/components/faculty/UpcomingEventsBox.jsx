@@ -30,13 +30,14 @@ const UpcomingEventsBox = () => {
 }, []);
 
   return (
-    <div className="upcoming-events-box">
-      <h3>Participate Upcoming Events</h3>
+  <div className="upcoming-events-box">
+    <h3>Participate Upcoming Events</h3>
 
-      {upcoming.length === 0 ? (
-        <p>No upcoming events available.</p>
-      ) : (
-        upcoming.map((e) => (
+    {upcoming.length === 0 ? (
+      <p>No upcoming events available.</p>
+    ) : (
+      <div className="event-list-scroll">
+        {upcoming.map((e) => (
           <div
             key={e.E_id}
             className="event-overview-card"
@@ -54,10 +55,12 @@ const UpcomingEventsBox = () => {
               <strong>Venue:</strong> {e.V_name || e.V_id}
             </p>
           </div>
-        ))
-      )}
-    </div>
-  );
+        ))}
+      </div>
+    )}
+  </div>
+)
 };
+
 
 export default UpcomingEventsBox;

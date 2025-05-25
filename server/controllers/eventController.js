@@ -18,7 +18,7 @@ exports.createEvent = async (req, res) => {
       `SELECT V_id FROM Venue WHERE V_name = ?`,
       [V_name]
     );
-    console.log(response);
+    //console.log(response);
     const vid = response[0][0].V_id;
 
     const [eventResult] = await pool.query(
