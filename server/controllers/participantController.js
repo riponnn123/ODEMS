@@ -2,16 +2,16 @@ const { pool } = require("../config/db");
 const nodemailer = require("nodemailer");
 
 // Reuse this transporter to send confirmation emails
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  requireTLS: true,
-});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+//   requireTLS: true,
+// });
 
 exports.registerParticipant = async (req, res) => {
   const { E_id } = req.body;
@@ -64,21 +64,21 @@ exports.registerParticipant = async (req, res) => {
     );
 
     // Send confirmation email
-    await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: email,
-  subject: `Registration Confirmed for ${event.E_title}`,
-  html: `
-    <h3>Hi ${name},</h3>
-    <p>Thank you for registering for the event <strong>${event.E_title}</strong>.</p>
-    <p><strong>Date:</strong> ${new Date(event.Date).toLocaleDateString("en-IN")}</p>
-    <p><strong>Time:</strong> ${event.Time}</p>
-    <p><strong>Venue:</strong> ${event.V_name}</p>
-    <p>We look forward to your participation!</p>
-    <br/>
-    <p>– ODEMS Team</p>
-  `
-});
+  //   await transporter.sendMail({
+  // from: process.env.EMAIL_USER,
+  // to: email,
+  // subject: `Registration Confirmed for ${event.E_title}`,
+  // html: `
+  //   <h3>Hi ${name},</h3>
+  //   <p>Thank you for registering for the event <strong>${event.E_title}</strong>.</p>
+  //   <p><strong>Date:</strong> ${new Date(event.Date).toLocaleDateString("en-IN")}</p>
+  //   <p><strong>Time:</strong> ${event.Time}</p>
+  //   <p><strong>Venue:</strong> ${event.V_name}</p>
+  //   <p>We look forward to your participation!</p>
+  //   <br/>
+  //   <p>– ODEMS Team</p>
+  //`
+//});
 
 
     res

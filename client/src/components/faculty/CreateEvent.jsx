@@ -80,16 +80,16 @@ const CreateEvent = () => {
       </div>
 
       <div className="create-form-row">
-  <label>Event Date</label>
-  <input
-    type="date"
-    name="Date"
-    value={formData.Date}
-    onChange={handleChange}
-    required
-    min={new Date().toISOString().split("T")[0]} // sets today as the minimum selectable date
-  />
-</div>
+        <label>Event Date</label>
+        <input
+          type="date"
+          name="Date"
+          value={formData.Date}
+          onChange={handleChange}
+          required
+          min={new Date().toISOString().split("T")[0]} // sets today as the minimum selectable date
+        />
+      </div>
 
 
       <div className="create-form-row">
@@ -130,7 +130,12 @@ const CreateEvent = () => {
 
       <div className="create-form-row">
         <label>Venue</label>
-        <select name="V_name" value={formData.V_name} onChange={handleChange} required>
+        <select
+          name="V_name"
+          value={formData.V_name}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select Venue</option>
           {venues.map((venue) => (
             <option key={venue.V_name} value={venue.V_name}>

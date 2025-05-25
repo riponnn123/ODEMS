@@ -18,6 +18,7 @@ import PostFinalizeEvent from "./pages/faculty/postEventdetails";
 import UpcomingEventsBox from "./components/faculty/UpcomingEventsBox";
 import EventDetails from "./components/EventDetails";
 import ViewParticipants from "./components/admin/ViewParticipants";
+import CompletedEventsBox from "./components/faculty/CompletedEventList";
 import "./styles/main.css";
 
 // Protected Route component
@@ -55,6 +56,7 @@ const App = () => {
           />
           <Route path="/events/upcoming" element={<UpcomingEventsBox />} />
           <Route path="/events/details/:E_id" element={<EventDetails />} />
+          <Route path="/faculty/completed-events" element={<CompletedEventsBox />} />
 
           <Route
             path="/admin/view-participants/:E_id"

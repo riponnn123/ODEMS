@@ -1,7 +1,5 @@
 const { pool } = require("../config/db");
 
-const nodemailer = require("nodemailer");
-
 exports.getAllEvents = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM Event");
@@ -217,6 +215,23 @@ exports.postEventDetails = async (req, res) => {
     res.status(200).json({ message: `${type} post-event data saved.` });
   } catch (err) {
     console.error("Post-finalization error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getCompletedEvents = async (req, res) => {
+  try {
+    const facultyId = req.user.F_id;
+    const [events] = await pool.query(
+      `SELECT E.*, V.V_name 
+       FROM Event E
+       JOIN Venue V ON E.V_id = V.V_id
+       WHERE E.F_id = ? AND E.Date < CURDATE() AND E.ConfirmationStatus = 1`,
+      [facultyId]
+    );
+    //console.log("Total completed events:", events.length);
+    res.json(events);
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

@@ -1,0 +1,16 @@
+.completed-events-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+.event-overview-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.event-overview-card:hover {
+  background-color: #e3f2fd;
+}

@@ -3,6 +3,7 @@ import FacultyInfoBox from "../../components/faculty/FacultyInfoBox"
 import EventListBox from "../../components/faculty/EventListBox";
 import CreateEvent from "../../components/faculty/CreateEvent";
 import UpcomingEventsBox from "../../components/faculty/UpcomingEventsBox";
+import CompletedEventsBox from "../../components/faculty/CompletedEventList";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:7777/api"; // 🛠 replace with your actual base URL
@@ -83,6 +84,10 @@ return (
         <h3 className="box-title">Upcoming Events</h3>
         <UpcomingEventsBox />
       </div>
+    </div>
+    <div className="dashboard-box">
+      <h3 className="box-title">Completed Events</h3>
+      <CompletedEventsBox />
     </div>
   </div>
 
