@@ -244,13 +244,6 @@ exports.getUpcomingEventsWithDetails = async (req, res) => {
        JOIN Venue V ON E.V_id = V.V_id
        WHERE E.ConfirmationStatus = 1 AND E.Date >= CURDATE()`
     );
-    //console.log("Total upcoming confirmed events:", events.length);
-    //events.forEach(ev => console.log(`Event: ${ev.E_title}, Date: ${ev.Date}, Confirmed: ${ev.ConfirmationStatus}`));
-
-
-
-    //console.log("✅ Events fetched:", events); // ✅ log event data
-    // ✅ Return empty list if no events
     if (events.length === 0) {
       return res.status(200).json([]);
     }

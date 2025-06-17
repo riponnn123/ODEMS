@@ -11,8 +11,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios
-      .get(`${BASE_URL}/admin/event/all`, {
+    axios.get(`${BASE_URL}/admin/event/all`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEvents(res.data))

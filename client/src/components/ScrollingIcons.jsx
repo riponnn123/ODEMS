@@ -1,5 +1,3 @@
-import React from "react";
-
 import icon1 from "../assets/icons/icon1.svg";
 import icon2 from "../assets/icons/icon2.svg";
 import icon3 from "../assets/icons/icon3.svg";

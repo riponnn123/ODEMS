@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_ENDPOINTS } from '../../config/api';
@@ -107,18 +107,6 @@ const Register = () => {
             <option value="faculty">Faculty</option>
           </select>
         </div>
-        {/* <div className="form-group">
-          <label className="form-label" htmlFor="department">Department</label>
-          <input
-            type="text"
-            id="department"
-            name="department"
-            className="form-input"
-            value={formData.department}
-            onChange={handleChange}
-            required
-          />
-        </div> */}
         {formData.role === 'student' && (
           <div className="form-group">
             <label className="form-label" htmlFor="studentId">Student ID</label>

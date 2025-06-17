@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +57,7 @@ const FinalizeEvent = () => {
         {event.E_type === "Meeting" && (
           <>
             <textarea name="Agenda" placeholder="Agenda" onChange={handleChange} required />
-            <input name="Members" placeholder="Comma-separated Members" onChange={handleChange} />
+            <input name="Members" placeholder="Presiding Members" onChange={handleChange} />
             <input name="Points" placeholder="Key Points" onChange={handleChange} />
           </>
         )}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../../styles/studentDashboard.css';
 import UpcomingEventsBox from '../../components/faculty/UpcomingEventsBox'; // Reused component
 import NewsBox from '../../components/student/NewsBox';
-import RegisteredEventsBox from '../../components/student/RegisteredEventsBox';
+//import RegisteredEventsBox from '../../components/student/RegisteredEventsBox';
 
 const BASE_URL = "http://localhost:7777/api";
 
@@ -64,9 +64,7 @@ const StudentDashboard = () => {
       <h3>News & Notifications</h3>
       <NewsBox />
     </div>
-    <div className="grid-item">
-      <RegisteredEventsBox />
-    </div>
+    
   </div>
 </div>
 

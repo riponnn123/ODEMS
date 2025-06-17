@@ -10,34 +10,6 @@ exports.getAllStudents = async (req, res) => {
   }
 };
 
-// exports.studentLogin = async (req, res) => {
-//   console.log("Student login request:", req.body);
-//   const { S_email, S_password } = req.body;
-//   try {
-//     const [students] = await pool.query('SELECT * FROM Student WHERE S_email = ?', [S_email]);
-//     if (students.length === 0) {
-//       return res.status(400).json({ message: 'Student not found' });
-//     }
-
-//     const validPassword = await bcrypt.compare(S_password, students[0].S_password);
-//     if (!validPassword) {
-//       return res.status(400).json({ message: 'Invalid password' });
-//     }
-
-//     const token = generateToken({ S_rollno: students[0].S_rollno, role: 'student' });
-//     console.log("Generated token during login:", token); // Log the generated token for debugging
-//     //res.cookie('token', token, { httpOnly: true, secure: false });
-//     res.status(200).json({
-//       message: "Student login successful",
-//       token,
-//       role: "student"
-//     });
-
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
-
 exports.getStudentInfo = async (req, res) => {
   try {
     //console.log("Requesting student info for user:", req.user); // Log the user object for debugging

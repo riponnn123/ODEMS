@@ -11,42 +11,6 @@ exports.getAllFaculty = async (req, res) => {
   }
 };
 
-// exports.facultyLogin = async (req, res) => {
-//   const { F_email, F_password } = req.body;
-//   console.log("Faculty login request:", req.body);
-
-//   try {
-//     const [faculties] = await pool.query(
-//       "SELECT * FROM Faculty WHERE F_email = ?",
-//       [F_email]
-//     );
-
-//     if (faculties.length === 0) {
-//       return res.status(400).json({ message: "Faculty not found" });
-//     }
-
-//     const validPassword = await bcrypt.compare(
-//       F_password,
-//       faculties[0].F_password
-//     );
-
-//     if (!validPassword) {
-//       return res.status(400).json({ message: "Invalid password" });
-//     }
-
-//     // ✅ Generate token and return in JSON
-//     const token = generateToken({ F_id: faculties[0].F_id, role: "faculty" });
-
-//     res.status(200).json({
-//       message: "Faculty login successful",
-//       token,
-//       role: "faculty"
-//     });
-
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 
 exports.getAllRequests = async (req, res) => {
   try {

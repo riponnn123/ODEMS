@@ -11,7 +11,6 @@ export const API_ENDPOINTS = {
   STUDENT: {
     BASE: `${BASE_URL}/students`,
     DASHBOARD: `${BASE_URL}/students/dashboard`,
-    LOGIN: `${BASE_URL}/students/student-login`,
     REGISTER: `${BASE_URL}/students/create-student`,
     GET_INFO: `${BASE_URL}/students/info`,
   },
@@ -20,7 +19,6 @@ export const API_ENDPOINTS = {
   FACULTY: {
     BASE: `${BASE_URL}/faculties`,
     DASHBOARD: `${BASE_URL}/faculties/dashboard`,
-    LOGIN: `${BASE_URL}/faculties/faculty-login`,
     REGISTER: `${BASE_URL}/faculties/create-faculty`,
     GET_INFO: `${BASE_URL}/faculties/info`,
     GET_REQUESTS: `${BASE_URL}/faculties/see-all-req`,
@@ -30,7 +28,6 @@ export const API_ENDPOINTS = {
   ADMIN: {
     BASE: `${BASE_URL}/admin`,
     DASHBOARD: `${BASE_URL}/admin/dashboard`,
-    LOGIN: `${BASE_URL}/admin/admin-login`,
     GET_INFO: `${BASE_URL}/admin/info`,
     APPROVE_REQUEST: (eventId) => `${BASE_URL}/admin/approveRequest/${eventId}`,
     REJECT_REQUEST: (eventId) => `${BASE_URL}/admin/rejectRequest/${eventId}`,

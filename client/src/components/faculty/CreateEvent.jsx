@@ -27,7 +27,7 @@ const CreateEvent = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value })); //...means spread operator to copy existing properties
   };
 
   const handleSubmit = async (e) => {
